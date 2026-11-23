@@ -43,8 +43,8 @@ export function Header() {
         className={cn(
           "mx-auto flex h-16 max-w-[1320px] items-center justify-between gap-6 rounded-full border pl-5 pr-2 transition-[background-color,border-color,box-shadow] duration-500 sm:pl-7",
           scrolled || open
-            ? "border-white/10 bg-[#080808]/85 shadow-[0_10px_30px_-18px_rgb(0_0_0/0.6)] backdrop-blur-xl"
-            : "border-white/10 bg-[#080808]/70 backdrop-blur-md lg:border-transparent lg:bg-transparent lg:backdrop-blur-none",
+            ? "border-white/15 bg-[#080808]/55 shadow-[0_10px_30px_-18px_rgb(0_0_0/0.6)] backdrop-blur-xl backdrop-saturate-150"
+            : "border-white/10 bg-[#080808]/30 backdrop-blur-xl backdrop-saturate-150",
         )}
       >
         <Link href="/" aria-label="GAB — home" className="relative z-10">
