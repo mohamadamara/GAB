@@ -1,0 +1,139 @@
+"use client";
+
+import Link from "next/link";
+import { motion, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
+import type { ComponentProps, PointerEvent, ReactNode } from "react";
+import { cn } from "@/lib/cn";
+
+type Variant = "primary" | "secondary" | "ghost" | "dark";
+type Size = "md" | "lg";
+
+const base =
+  "group relative isolate inline-flex items-center justify-center gap-2.5 overflow-hidden whitespace-nowrap rounded-full font-medium tracking-tight transition-[color,border-color,box-shadow] duration-500 ease-[var(--ease-out-expo)] disabled:pointer-events-none disabled:opacity-50";
+
+// Primary uses fixed colours so it stays coral-with-black-text inside dark sections too.
+const variants: Record<Variant, string> = {
+  primary: "bg-accent-500 text-[#080808] hover:text-[#080808]",
+  secondary: "border border-ink-900/20 bg-transparent text-ink-900 hover:border-ink-900 hover:text-paper",
+  ghost: "text-ink-600 hover:text-ink-900",
+  dark: "bg-ink-900 text-paper hover:text-[#080808]",
+};
+
+// The fill that rises from below on hover
+const fills: Record<Variant, string | null> = {
+  primary: "bg-[#f3ece0]",
+  secondary: "bg-ink-900",
+  ghost: null,
+  dark: "bg-accent-500",
+};
+
+const sizes: Record<Size, string> = {
+  md: "h-11 px-6 text-[0.9375rem]",
+  lg: "h-14 px-8 text-base",
+};
+
+function Arrow() {
+  return (
+    <svg aria-hidden viewBox="0 0 16 16" className="relative size-4" fill="none" stroke="currentColor" strokeWidth="1.6">
+      <path d="M2 8h11M9 4l4 4-4 4" />
+    </svg>
+  );
+}
+
+/** Label that rolls up and is replaced by a copy of itself on hover */
+function Roll({ children }: { children: ReactNode }) {
+  return (
+    <span className="roll relative">
+      <span>{children}</span>
+      <span aria-hidden>{children}</span>
+    </span>
+  );
+}
+
+function Inner({ variant, arrow, children }: { variant: Variant; arrow?: boolean; children: ReactNode }) {
+  const fill = fills[variant];
+  return (
+    <>
+      {fill && (
+        <span
+          aria-hidden
+          className={cn(
+            "absolute left-1/2 top-full -z-10 aspect-square w-[140%] -translate-x-1/2 rounded-[50%] transition-transform duration-700 ease-[var(--ease-out-expo)] group-hover:-translate-y-[62%]",
+            fill,
+          )}
+        />
+      )}
+      <Roll>{children}</Roll>
+      {arrow && <Arrow />}
+    </>
+  );
+}
+
+function useMagnet(strength = 0.3) {
+  const reduce = useReducedMotion();
+  const x = useSpring(useMotionValue(0), { stiffness: 220, damping: 16, mass: 0.4 });
+  const y = useSpring(useMotionValue(0), { stiffness: 220, damping: 16, mass: 0.4 });
+  return {
+    style: { x, y },
+    onPointerMove: (e: PointerEvent<HTMLElement>) => {
+      if (reduce || e.pointerType !== "mouse") return;
+      const r = e.currentTarget.getBoundingClientRect();
+      x.set((e.clientX - (r.left + r.width / 2)) * strength);
+      y.set((e.clientY - (r.top + r.height / 2)) * strength);
+    },
+    onPointerLeave: () => {
+      x.set(0);
+      y.set(0);
+    },
+  };
+}
+
+const MotionLink = motion.create(Link);
+
+type Common = { variant?: Variant; size?: Size; arrow?: boolean; children: ReactNode; className?: string };
+
+export function ButtonLink({
+  href,
+  variant = "primary",
+  size = "md",
+  arrow,
+  className,
+  children,
+  ...rest
+}: Common &
+  Omit<
+    ComponentProps<typeof Link>,
+    "className" | "children" | "style" | "onPointerMove" | "onPointerLeave" | "onAnimationStart" | "onDrag" | "onDragStart" | "onDragEnd"
+  >) {
+  const magnet = useMagnet();
+  return (
+    <MotionLink href={href} className={cn(base, variants[variant], sizes[size], className)} {...magnet} {...rest}>
+      <Inner variant={variant} arrow={arrow}>
+        {children}
+      </Inner>
+    </MotionLink>
+  );
+}
+
+export function Button({
+  variant = "primary",
+  size = "md",
+  arrow,
+  className,
+  children,
+  type = "button",
+  ...rest
+}: Common &
+  Omit<
+    ComponentProps<"button">,
+    "className" | "children" | "style" | "onPointerMove" | "onPointerLeave" | "onAnimationStart" | "onDrag" | "onDragStart" | "onDragEnd"
+  >) {
+  const magnet = useMagnet();
+  return (
+    <motion.button type={type} className={cn(base, variants[variant], sizes[size], className)} {...magnet} {...rest}>
+      <Inner variant={variant} arrow={arrow}>
+        {children}
+      </Inner>
+    </motion.button>
+  );
+}
