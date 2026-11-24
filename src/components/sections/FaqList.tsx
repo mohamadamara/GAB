@@ -2,11 +2,11 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useId, useState } from "react";
-import type { Faq } from "@/data/faq";
+import type { Faq } from "@/i18n/pages/faq";
 import { cn } from "@/lib/cn";
 import { easeOutExpo } from "../animations/Reveal";
 
-export function FaqList({ items, labels }: { items: Faq[]; labels: Record<NonNullable<Faq["status"]>, string> }) {
+export function FaqList({ items }: { items: Faq[] }) {
   const [open, setOpen] = useState<number | null>(0);
   const base = useId();
 
@@ -55,16 +55,6 @@ export function FaqList({ items, labels }: { items: Faq[]; labels: Record<NonNul
                   className="overflow-hidden"
                 >
                   <div className="pb-8 ps-9 sm:pe-12 sm:ps-12">
-                    {f.status && (
-                      <span
-                        className={cn(
-                          "mb-4 inline-block rounded-[3px] px-2 py-0.5 font-mono text-[0.62rem] uppercase tracking-[0.14em]",
-                          f.status === "planned" ? "border border-accent-500/40 text-accent-600" : "border border-ink-900/15 text-ink-500",
-                        )}
-                      >
-                        {labels[f.status]}
-                      </span>
-                    )}
                     <p className="max-w-3xl text-base leading-relaxed text-ink-600 sm:text-lg">{f.a}</p>
                   </div>
                 </motion.div>

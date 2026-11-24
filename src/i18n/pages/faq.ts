@@ -1,93 +1,111 @@
 import type { Lang } from "../config";
-import { faqs, type Faq } from "@/data/faq";
 
-/** Copy for /faq. Question order and status labels match `src/data/faq.ts`. */
+export type Faq = { q: string; a: string };
+
+/**
+ * Copy for /faq. Answers describe how we work in general terms; anything that is a business
+ * policy (pricing model, code ownership, warranty) should be added here only once it's decided.
+ */
 const en = {
   metaTitle: "FAQ",
-  metaDescription: "Honest answers about GAB: what it is, who it's for, what's available today and what's planned.",
+  metaDescription: "Common questions about working with GAB: what we build, how a project starts, timelines, pricing and support after launch.",
   eyebrow: "FAQ",
-  title: ["Honest answers,", "clearly labelled."],
-  lead: "Each answer is marked as either describing GAB itself or describing planned functionality. Nothing on this page refers to a feature that is live today.",
-  statusEyebrow: "Current status",
-  statusTitle: "The platform is in development.",
-  statusText: "You can explore the concept and register interest today. Posting projects and builder registration will come later.",
-  ask: "Ask another question",
-  preview: "Preview the platform",
-  labels: { available: "Available now", planned: "Planned", info: "About GAB" },
-  items: faqs,
+  title: ["Common questions,", "straight answers."],
+  lead: "What clients usually ask before we start working together. Don't see your question? Ask us directly.",
+  statusEyebrow: "Still have a question?",
+  statusTitle: "Talk to us directly.",
+  statusText: "Tell us about your project or ask anything about how we work — we'll answer personally.",
+  ask: "Ask a question",
+  preview: "See our projects",
+  items: [
+    {
+      q: "What does GAB do?",
+      a: "GAB is a software development company. We design and build websites, mobile apps and business systems — from planning and design through development, launch and ongoing support.",
+    },
+    {
+      q: "What kinds of software do you build?",
+      a: "Websites and web applications, mobile apps, SaaS platforms, CRM and ERP systems, booking and appointment systems, business dashboards, workflow automation, online stores, AI-powered applications and custom software. The Services page has details on each.",
+    },
+    {
+      q: "Do I need technical knowledge to work with you?",
+      a: "No. Describe your business and the problem in your own words — turning that into a technical plan is our job. We'll ask the questions that matter and explain our recommendations in plain language.",
+    },
+    {
+      q: "How does a project start?",
+      a: "With a conversation about your business and goals. Then we put together a clear scope — features by priority, a timeline in phases and a quote. Design and development start only once you've approved it.",
+    },
+    {
+      q: "How long does a project take?",
+      a: "It depends on the scope: a focused website is very different from a full business system. After the planning stage you get a timeline broken into phases, so you know what will be ready and when.",
+    },
+    {
+      q: "How much does it cost?",
+      a: "Every project is priced by its scope. Once we understand what you need, you receive a quote before any work begins. Splitting the work into phases also makes it easier to start with what matters most and budget for the rest.",
+    },
+    {
+      q: "Can you work on a system we already have?",
+      a: "Yes. We can fix, improve, extend or maintain an existing website or system. We start by reviewing what's there, then recommend whether to build on it or replace parts of it.",
+    },
+    {
+      q: "What happens after launch?",
+      a: "We make sure your team knows how to use the system, and we remain available for fixes, improvements and the next version — with ongoing maintenance if you want it.",
+    },
+    {
+      q: "Can I see examples of your work?",
+      a: "Yes. Case studies are published on the Projects page as they're approved by our clients. If you'd like to see examples relevant to your project, get in touch and we'll walk you through them.",
+    },
+  ] as Faq[],
 };
-
-const heItems: Faq[] = [
-  {
-    q: "מה זה GAB?",
-    a: "GAB היא פלטפורמה לפיתוח תוכנה שנמצאת בהקמה. היא נועדה לחבר בין לקוחות ועסקים שצריכים מוצר דיגיטלי — אתר, אפליקציה, מערכת לניהול העסק ועוד — לבין מפתחים עצמאיים, סטודיואים וצוותי פיתוח שיכולים לבנות אותו.",
-    status: "info",
-  },
-  {
-    q: "אפשר כבר להשתמש ב־GAB?",
-    a: "עדיין לא. GAB נמצאת בבנייה. האתר הזה מציג את הרעיון וסקיצות של הממשקים המתוכננים. כרגע אי אפשר לפרסם פרויקטים, לפתוח פרופיל מפתח או להעסיק מישהו דרך GAB — אבל אפשר להשאיר פרטים בעמוד יצירת הקשר.",
-    status: "info",
-  },
-  {
-    q: "למי GAB מיועדת?",
-    a: "לשני צדדים. מצד אחד: בעלי עסקים, יזמים וארגונים שצריכים תוכנה. מצד שני: מפתחים עצמאיים, סטודיואים וצוותי פיתוח שבונים אותה.",
-    status: "info",
-  },
-  {
-    q: "צריך ידע טכני?",
-    a: "לא. GAB מתוכננת כך שתתחילו פשוט מלתאר את הבעיה העסקית שלכם, בשפה יומיומית. תהליך פתיחת הפרויקט המתוכנן יעזור להפוך את התיאור הזה למטרות, משתמשים ופיצ׳רים שמפתחים יבינו.",
-    status: "planned",
-  },
-  {
-    q: "לאיזה סוגי תוכנה אפשר למצוא מפתחים?",
-    a: "התוכנית היא לכסות אתרים ואפליקציות ווב, אפליקציות מובייל, פלטפורמות SaaS, מערכות CRM ו־ERP, מערכות לזימון תורים, דשבורדים עסקיים, אוטומציה של תהליכים, חנויות אונליין, אפליקציות AI ותוכנה בהתאמה אישית.",
-    status: "planned",
-  },
-  {
-    q: "מפתחים עצמאיים יכולים להצטרף?",
-    a: "בהחלט — מפתחים עצמאיים הם חלק מרכזי בפלטפורמה. ההרשמה עוד לא נפתחה, אבל אפשר להשאיר פרטים ונעדכן אתכם.",
-    status: "planned",
-  },
-  {
-    q: "גם סטודיואים לפיתוח יכולים להשתתף?",
-    a: "כן. GAB מתוכננת למפתחים בכל גודל: עצמאיים, סטודיואים קטנים ובינוניים וצוותי פיתוח גדולים — כדי שכל לקוח ימצא צוות שמתאים להיקף הפרויקט שלו.",
-    status: "planned",
-  },
-  {
-    q: "איך לקוחות ישוו בין מפתחים?",
-    a: "התוכנית היא שכל מפתח יציג כישורים, טכנולוגיות, שירותים, תיק עבודות וזמינות באותו מבנה, ושהצעות המחיר יוצגו זו לצד זו לפי אותם קריטריונים: גישה, לוח זמנים, שלבים, מודל תמחור והיקף.",
-    status: "planned",
-  },
-  {
-    q: "איך GAB תחבר בין לקוחות למפתחים?",
-    a: "דרך תהליך מסודר: הלקוח מתאר את הצורך, הדרישות מסתדרות להגדרה ברורה, מוצאים מפתחים רלוונטיים, משווים פרופילים והצעות — והלקוח בוחר את ההתאמה הטובה ביותר. התאמה אוטומטית בין הגדרת הפרויקט לפרופילים של המפתחים היא חלק מהכיוון המתוכנן.",
-    status: "planned",
-  },
-  {
-    q: "GAB היא חברת פיתוח?",
-    a: "לא. GAB לא מוכרת שירותי פיתוח בעצמה. היא נבנית כפלטפורמה ניטרלית — מקום שבו מי שצריך תוכנה ומי שבונה תוכנה מוצאים זה את זה.",
-    status: "info",
-  },
-  {
-    q: "הפרופילים והמספרים באתר אמיתיים?",
-    a: "לא. כל שמות המפתחים, הפרופילים, ההצעות והמספרים שמופיעים בסקיצות ובהדגמות בדויים, ומסומנים ככאלה. ל־GAB עדיין אין משתמשים, עסקאות או נתונים לדווח עליהם.",
-    status: "info",
-  },
-];
 
 const he: typeof en = {
   metaTitle: "שאלות נפוצות",
-  metaDescription: "תשובות ישירות על GAB: מה זה, למי זה מיועד, מה קיים היום ומה מתוכנן.",
+  metaDescription: "שאלות נפוצות על עבודה עם GAB: מה אנחנו בונים, איך מתחיל פרויקט, לוחות זמנים, מחיר וליווי אחרי ההשקה.",
   eyebrow: "שאלות נפוצות",
-  title: ["תשובות ישירות,", "בלי אותיות קטנות."],
-  lead: "ליד כל תשובה כתוב אם היא מתארת את GAB עצמה או יכולת שמתוכננת בעתיד. שום דבר בעמוד הזה לא מתאר יכולת שכבר פעילה היום.",
-  statusEyebrow: "איפה אנחנו עומדים",
-  statusTitle: "הפלטפורמה בפיתוח.",
-  statusText: "כבר עכשיו אפשר להכיר את הרעיון ולהשאיר פרטים. פרסום פרויקטים והרשמה למפתחים יגיעו בהמשך.",
-  ask: "יש לי שאלה אחרת",
-  preview: "הצצה לפלטפורמה",
-  labels: { available: "זמין עכשיו", planned: "מתוכנן", info: "על GAB" },
-  items: heItems,
+  title: ["שאלות נפוצות,", "תשובות ישירות."],
+  lead: "מה לקוחות בדרך כלל שואלים לפני שמתחילים לעבוד איתנו. לא מצאתם את השאלה שלכם? שאלו אותנו ישירות.",
+  statusEyebrow: "נשארה לכם שאלה?",
+  statusTitle: "דברו איתנו ישירות.",
+  statusText: "ספרו לנו על הפרויקט שלכם או שאלו כל דבר על איך אנחנו עובדים — נענה לכם באופן אישי.",
+  ask: "לשאול שאלה",
+  preview: "לפרויקטים שלנו",
+  items: [
+    {
+      q: "מה GAB עושה?",
+      a: "GAB היא חברה לפיתוח תוכנה. אנחנו מתכננים ובונים אתרים, אפליקציות מובייל ומערכות לעסקים — מהתכנון והעיצוב, דרך הפיתוח, ועד העלייה לאוויר והליווי השוטף.",
+    },
+    {
+      q: "איזה סוגי תוכנה אתם בונים?",
+      a: "אתרים ואפליקציות ווב, אפליקציות מובייל, פלטפורמות SaaS, מערכות CRM ו־ERP, מערכות לזימון תורים, דשבורדים עסקיים, אוטומציה של תהליכים, חנויות אונליין, אפליקציות AI ותוכנה בהתאמה אישית. בעמוד השירותים יש פירוט על כל אחד מהם.",
+    },
+    {
+      q: "צריך ידע טכני כדי לעבוד איתכם?",
+      a: "לא. תתארו את העסק ואת הבעיה במילים שלכם — לתרגם את זה לתוכנית טכנית זה התפקיד שלנו. נשאל את השאלות החשובות ונסביר את ההמלצות שלנו בשפה פשוטה.",
+    },
+    {
+      q: "איך מתחיל פרויקט?",
+      a: "בשיחה על העסק ועל המטרות שלכם. אחר כך אנחנו מכינים הגדרה ברורה — פיצ׳רים לפי סדר עדיפות, לוח זמנים בשלבים והצעת מחיר. העיצוב והפיתוח מתחילים רק אחרי שאישרתם.",
+    },
+    {
+      q: "כמה זמן לוקח פרויקט?",
+      a: "זה תלוי בהיקף: אתר ממוקד שונה מאוד ממערכת עסקית מלאה. אחרי שלב התכנון תקבלו לוח זמנים מחולק לשלבים, כך שתדעו מה יהיה מוכן ומתי.",
+    },
+    {
+      q: "כמה זה עולה?",
+      a: "כל פרויקט מתומחר לפי ההיקף שלו. ברגע שנבין מה אתם צריכים, תקבלו הצעת מחיר — עוד לפני שמתחילה עבודה כלשהי. חלוקה לשלבים גם מאפשרת להתחיל ממה שהכי חשוב ולתכנן את התקציב להמשך.",
+    },
+    {
+      q: "אתם יכולים לעבוד על מערכת שכבר קיימת אצלנו?",
+      a: "כן. אנחנו יכולים לתקן, לשפר, להרחיב או לתחזק אתר או מערכת קיימים. מתחילים בבדיקה של מה שקיים, ואז ממליצים אם להמשיך לבנות עליו או להחליף חלקים ממנו.",
+    },
+    {
+      q: "מה קורה אחרי ההשקה?",
+      a: "אנחנו מוודאים שהצוות שלכם יודע לעבוד עם המערכת, ונשארים זמינים לתיקונים, לשיפורים ולגרסה הבאה — כולל תחזוקה שוטפת, אם תרצו.",
+    },
+    {
+      q: "אפשר לראות דוגמאות לעבודות שלכם?",
+      a: "כן. סיפורי פרויקטים עולים לעמוד הפרויקטים ברגע שהלקוחות שלנו מאשרים אותם. אם תרצו לראות דוגמאות שרלוונטיות לפרויקט שלכם — דברו איתנו ונציג לכם אותן.",
+    },
+  ],
 };
 
 export const faqCopy: Record<Lang, typeof en> = { en, he };

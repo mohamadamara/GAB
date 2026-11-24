@@ -30,10 +30,10 @@ const plexHebrew = IBM_Plex_Sans_Hebrew({
 });
 
 const homeMeta = {
-  en: { title: "GAB — Your Idea. The Right Builders. One Place.", description: site.description },
+  en: { title: "GAB — Websites, apps and business systems, built for you", description: site.description },
   he: {
-    title: "GAB — הרעיון שלכם. המפתחים הנכונים. במקום אחד.",
-    description: "GAB היא פלטפורמה לפיתוח תוכנה שנמצאת בהקמה — ומחברת בין אנשים ועסקים שצריכים מוצר דיגיטלי לבין מפתחים עצמאיים, סטודיואים וצוותי פיתוח.",
+    title: "GAB — פיתוח אתרים, אפליקציות ומערכות לעסקים",
+    description: "GAB היא חברה לפיתוח תוכנה. אנחנו מתכננים ובונים אתרים, אפליקציות מובייל ומערכות לעסקים — מהתכנון והעיצוב ועד העלייה לאוויר והליווי השוטף.",
   },
 };
 
@@ -46,11 +46,14 @@ export async function generateMetadata(): Promise<Metadata> {
     description: m.description,
     applicationName: "GAB",
     keywords: [
-      "software development marketplace",
-      "find software developers",
-      "hire development studio",
-      "software builders",
+      "software development company",
+      "web development",
+      "app development",
+      "business systems",
       "custom software",
+      "פיתוח אתרים",
+      "פיתוח אפליקציות",
+      "פיתוח מערכות",
       "GAB",
     ],
     openGraph: { type: "website", siteName: "GAB", title: m.title, description: m.description },

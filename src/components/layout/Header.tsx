@@ -24,16 +24,14 @@ export function Header() {
   }, [open]);
 
   const primary = [
+    { label: t.nav.home, href: "/" },
     { label: t.nav.services, href: "/services" },
-    { label: t.nav.work, href: "/work" },
-  ];
-  const secondary = [
+    { label: t.nav.projects, href: "/projects" },
+    { label: t.nav.process, href: "/how-it-works" },
     { label: t.nav.about, href: "/about" },
-    { label: t.nav.howItWorks, href: "/how-it-works" },
-    { label: t.nav.builders, href: "/builders" },
-    { label: t.nav.faq, href: "/faq" },
   ];
-  const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/");
+  const secondary = [{ label: t.nav.faq, href: "/faq" }];
+  const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(href + "/"));
 
   return (
     // The blur lives on the inner bar: backdrop-filter would otherwise become the containing
@@ -46,7 +44,7 @@ export function Header() {
         {t.skip}
       </a>
       <div className="border-b border-accent-500/15 bg-paper/85 backdrop-blur-md">
-      <div className="container-wide flex h-[72px] items-center justify-between gap-4 md:grid md:grid-cols-[1fr_auto_1fr]">
+      <div className="container-wide flex h-[72px] items-center justify-between gap-4 lg:grid lg:grid-cols-[1fr_auto_1fr]">
         <Link href="/" aria-label={t.homeLabel} className="flex min-w-0 items-center gap-4">
           <Logo className="h-7 sm:h-8" />
           <span aria-hidden className="hidden h-8 w-px bg-ink-900/20 sm:block" />
@@ -61,8 +59,8 @@ export function Header() {
           </span>
         </Link>
 
-        <nav aria-label={t.nav.main} className="hidden md:block">
-          <ul className="flex items-center gap-10">
+        <nav aria-label={t.nav.main} className="hidden lg:block">
+          <ul className="flex items-center gap-7 xl:gap-9">
             {primary.map((item) => {
               const active = isActive(item.href);
               return (
@@ -71,7 +69,7 @@ export function Header() {
                     href={item.href}
                     aria-current={active ? "page" : undefined}
                     className={cn(
-                      "tracking-label relative py-2 font-mono text-[0.8rem] font-medium uppercase tracking-[0.2em] transition-colors",
+                      "tracking-label relative whitespace-nowrap py-2 font-mono text-[0.78rem] font-medium uppercase tracking-[0.18em] transition-colors",
                       active ? "text-accent-600" : "text-ink-800 hover:text-accent-600",
                     )}
                   >
@@ -96,13 +94,13 @@ export function Header() {
             href="/contact"
             aria-current={isActive("/contact") ? "page" : undefined}
             className={cn(
-              "tracking-label hidden h-11 items-center border px-5 font-mono text-[0.75rem] font-semibold uppercase tracking-[0.2em] transition-colors md:inline-flex",
+              "tracking-label hidden h-11 items-center border px-5 font-mono text-[0.75rem] font-semibold uppercase tracking-[0.2em] whitespace-nowrap transition-colors lg:inline-flex",
               isActive("/contact")
                 ? "border-accent-500 bg-accent-500 text-[#080807]"
                 : "border-accent-500/60 text-accent-600 hover:bg-accent-500 hover:text-[#080807]",
             )}
           >
-            {t.nav.contact}
+            {t.nav.cta}
           </Link>
           <button
             type="button"
@@ -110,7 +108,7 @@ export function Header() {
             aria-expanded={open}
             aria-controls="mobile-nav"
             aria-label={open ? t.nav.menuClose : t.nav.menuOpen}
-            className="grid size-11 place-items-center border border-ink-900/15 md:hidden"
+            className="grid size-11 place-items-center border border-ink-900/15 lg:hidden"
           >
             <span className="relative block h-2.5 w-5">
               <span
@@ -139,7 +137,7 @@ export function Header() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-x-0 bottom-0 top-[73px] overflow-y-auto bg-paper md:hidden"
+            className="fixed inset-x-0 bottom-0 top-[73px] overflow-y-auto bg-paper lg:hidden"
           >
             <nav aria-label={t.nav.main} className="container-wide flex min-h-full flex-col pb-10 pt-6">
               <ul className="border-t border-ink-900/10">
@@ -154,9 +152,9 @@ export function Header() {
                     <Link
                       href={item.href}
                       aria-current={isActive(item.href) ? "page" : undefined}
-                      className="flex items-baseline gap-4 py-5"
+                      className="flex items-baseline gap-4 py-4"
                     >
-                      <span className="font-mono text-xs text-accent-600">0{i + 1}</span>
+                      <span className="font-mono text-xs text-accent-600">{String(i + 1).padStart(2, "0")}</span>
                       <span className={cn("font-display text-3xl", isActive(item.href) ? "text-accent-600" : "text-ink-900")}>
                         {item.label}
                       </span>

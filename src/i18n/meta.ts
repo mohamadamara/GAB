@@ -1,39 +1,37 @@
 import type { Lang } from "./config";
 
 /** <title> and meta description for pages whose body copy lives in the dictionary. */
-export const pageMeta: Record<"services" | "work" | "contact", Record<Lang, { title: string; description: string }>> = {
+export const pageMeta: Record<"services" | "projects" | "contact", Record<Lang, { title: string; description: string }>> = {
   services: {
     en: {
       title: "Services",
       description:
-        "The software GAB is being built to help you find builders for: websites, mobile apps, SaaS, CRM, ERP, booking systems, dashboards, automation, e-commerce, AI and custom software.",
+        "What GAB builds: websites, mobile apps, SaaS platforms, CRM and ERP systems, booking systems, dashboards, automation, e-commerce, AI and custom software.",
     },
     he: {
       title: "שירותים",
       description:
-        "איזו תוכנה תוכלו לבנות עם מפתחים דרך GAB: אתרים, אפליקציות מובייל, SaaS, מערכות CRM ו־ERP, זימון תורים, דשבורדים, אוטומציה, חנויות אונליין, AI ותוכנה בהתאמה אישית.",
+        "מה GAB בונה: אתרים, אפליקציות מובייל, פלטפורמות SaaS, מערכות CRM ו־ERP, זימון תורים, דשבורדים, אוטומציה, חנויות אונליין, AI ותוכנה בהתאמה אישית.",
     },
   },
-  work: {
+  projects: {
     en: {
-      title: "Work",
-      description:
-        "Concept previews of the planned GAB platform: customer dashboard, project creation, builder discovery, profiles, proposal comparison, builder dashboard and administration.",
+      title: "Projects",
+      description: "Websites, apps and business systems designed and built by GAB — the challenge, what we built and the result.",
     },
     he: {
-      title: "הצצה לפלטפורמה",
-      description:
-        "סקיצות של פלטפורמת GAB המתוכננת: לוח בקרה ללקוח, פתיחת פרויקט, חיפוש מפתחים, פרופילים, השוואת הצעות, לוח בקרה למפתח וניהול.",
+      title: "פרויקטים",
+      description: "אתרים, אפליקציות ומערכות שתכננה ובנתה GAB — האתגר, מה בנינו ומה הייתה התוצאה.",
     },
   },
   contact: {
     en: {
       title: "Contact",
-      description: "Get in touch with GAB about general inquiries, business partnerships, developer interest or collaboration opportunities.",
+      description: "Tell GAB about the website, app or system you want to build or improve.",
     },
     he: {
       title: "צרו קשר",
-      description: "דברו עם GAB: שאלות כלליות, שותפויות עסקיות, הצטרפות כמפתחים או רעיונות לשיתוף פעולה.",
+      description: "ספרו ל־GAB על האתר, האפליקציה או המערכת שתרצו לבנות או לשפר.",
     },
   },
 };

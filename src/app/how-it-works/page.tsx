@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/layout/PageHero";
 import { SectionHeading, Accent } from "@/components/ui/SectionHeading";
-import { Walkthrough } from "@/components/sections/Walkthrough";
 import { Reveal, Stagger, StaggerItem } from "@/components/animations/Reveal";
 import { FinalCta } from "@/components/sections/FinalCta";
 import { ButtonLink } from "@/components/ui/Button";
+import { dictionaries } from "@/i18n/dictionary";
 import { getLang } from "@/i18n/server";
 import { howItWorksCopy } from "@/i18n/pages/howItWorks";
 
@@ -13,8 +13,11 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: c.metaTitle, description: c.metaDescription };
 }
 
-export default async function HowItWorksPage() {
-  const c = howItWorksCopy[await getLang()];
+export default async function ProcessPage() {
+  const lang = await getLang();
+  const c = howItWorksCopy[lang];
+  const { steps, stepLabel } = dictionaries[lang].process;
+
   return (
     <>
       <PageHero
@@ -27,68 +30,62 @@ export default async function HowItWorksPage() {
         lead={c.lead}
       >
         <div className="flex flex-col gap-3 sm:flex-row">
-          <ButtonLink href="#walkthrough" size="lg" arrow>
+          <ButtonLink href="/contact?topic=project" size="lg" arrow>
             {c.start}
           </ButtonLink>
-          <ButtonLink href="/work" size="lg" variant="secondary">
-            {c.preview}
+          <ButtonLink href="/services" size="lg" variant="secondary">
+            {c.services}
           </ButtonLink>
         </div>
       </PageHero>
 
-      {/* Overview */}
-      <section className="border-t border-ink-900/[0.07] py-20 sm:py-24">
-        <div className="container-gab">
-          <Stagger className="grid gap-px overflow-hidden rounded-[var(--radius-panel)] border border-ink-900/10 bg-white/10 sm:grid-cols-2 lg:grid-cols-5">
-            {c.steps.map((s) => (
-              <StaggerItem key={s.key} className="group relative bg-white p-7 transition-colors hover:bg-white">
-                <span className="font-mono text-xs tracking-[0.2em] text-accent-600">{c.stepLabel} {s.n}</span>
-                <h3 className="mt-4 text-2xl font-medium tracking-[-0.03em] text-ink-900">{s.title}</h3>
-                <p className="mt-3 text-[0.95rem] leading-relaxed text-ink-600">{s.text}</p>
-                <span aria-hidden className="absolute bottom-0 start-0 h-[2px] w-0 bg-accent-400 transition-[width] duration-700 group-hover:w-full" />
-              </StaggerItem>
-            ))}
-          </Stagger>
-        </div>
+      {/* The five steps */}
+      <section className="border-t border-ink-900/[0.07] py-16 sm:py-24">
+        <ol className="container-gab border-t border-ink-900/10">
+          {steps.map((s, i) => (
+            <li key={s.key} className="border-b border-ink-900/10">
+              <Reveal className="grid gap-5 py-10 md:grid-cols-[120px_1fr_minmax(220px,0.7fr)] md:gap-10 md:py-12">
+                <span className="font-mono text-sm text-accent-600">
+                  {stepLabel} {String(i + 1).padStart(2, "0")}
+                </span>
+                <div>
+                  <h2 className="font-display text-[1.9rem] leading-[1.05] text-ink-950 sm:text-[2.4rem]">{s.title}</h2>
+                  <p className="mt-4 max-w-2xl text-lg leading-relaxed text-ink-600">{s.text}</p>
+                </div>
+                <div>
+                  <p className="tracking-label font-mono text-[0.68rem] uppercase tracking-[0.2em] text-ink-500">{c.getLabel}</p>
+                  <ul className="mt-3 space-y-2">
+                    {s.get.map((g) => (
+                      <li key={g} className="flex gap-3 text-[0.95rem] text-ink-800">
+                        <span aria-hidden className="mt-[0.7em] h-px w-3 shrink-0 bg-accent-500" />
+                        {g}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Reveal>
+            </li>
+          ))}
+        </ol>
       </section>
 
-      {/* Walkthrough */}
-      <section id="walkthrough" className="scroll-mt-20 py-20 sm:py-28">
+      {/* Principles */}
+      <section className="bg-mist py-20 sm:py-28">
         <div className="container-gab">
           <SectionHeading
-            eyebrow={c.walkEyebrow}
+            eyebrow={c.principlesEyebrow}
             title={
               <>
-                {c.walkTitle[0]} <Accent>{c.walkTitle[1]}</Accent>
+                {c.principlesTitle[0]} <Accent>{c.principlesTitle[1]}</Accent>
               </>
             }
-            lead={c.walkLead}
           />
-          <Reveal delay={0.1} className="mt-12">
-            <Walkthrough />
-          </Reveal>
-        </div>
-      </section>
-
-      {/* Builder side */}
-      <section className="bg-sand py-24 text-ink-900 sm:py-32">
-        <div className="container-gab grid gap-14 lg:grid-cols-[1fr_1.3fr] lg:gap-24">
-          <SectionHeading
-            tone="light"
-            eyebrow={c.builderEyebrow}
-            title={
-              <>
-                {c.builderTitle[0]} <Accent>{c.builderTitle[1]}</Accent>
-              </>
-            }
-            lead={c.builderLead}
-          />
-          <Stagger className="grid border-t border-ink-900/10 sm:grid-cols-2">
-            {c.builderSide.map(([t, d], i) => (
-              <StaggerItem key={t} className="border-b border-ink-900/10 py-8 sm:px-6 sm:[&:nth-child(odd)]:border-e sm:[&:nth-child(odd)]:ps-0">
-                <span className="font-mono text-xs text-accent-600">0{i + 1}</span>
-                <h3 className="mt-3 text-xl font-medium tracking-[-0.025em]">{t}</h3>
-                <p className="mt-2 leading-relaxed text-ink-600">{d}</p>
+          <Stagger className="mt-12 grid gap-px border border-ink-900/10 bg-ink-900/10 sm:grid-cols-2 lg:grid-cols-4">
+            {c.principles.map(([title, text], i) => (
+              <StaggerItem key={title} className="bg-paper p-6 sm:p-7">
+                <span className="font-mono text-xs text-accent-600">{String(i + 1).padStart(2, "0")}</span>
+                <h3 className="mt-4 text-xl font-semibold text-ink-900">{title}</h3>
+                <p className="mt-2 leading-relaxed text-ink-600">{text}</p>
               </StaggerItem>
             ))}
           </Stagger>
@@ -98,8 +95,8 @@ export default async function HowItWorksPage() {
       <FinalCta
         title={c.ctaTitle}
         text={c.ctaText}
-        cta={{ label: c.ctaPrimary, href: "/contact?topic=general" }}
-        secondary={{ label: c.ctaSecondary, href: "/services" }}
+        cta={{ label: c.ctaPrimary, href: "/contact?topic=project" }}
+        secondary={{ label: c.ctaSecondary, href: "/faq" }}
       />
     </>
   );

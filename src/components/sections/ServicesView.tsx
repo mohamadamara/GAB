@@ -95,7 +95,7 @@ export function ServicesView() {
                             ))}
                           </ul>
                           <Link
-                            href="/contact"
+                            href="/contact?topic=project"
                             className="tracking-label mt-7 inline-flex items-center gap-2 border-b border-accent-500/60 pb-1 font-mono text-[0.75rem] font-semibold uppercase tracking-[0.18em] text-accent-600 transition-colors hover:border-accent-500 hover:text-accent-700"
                           >
                             {t.services.ask}

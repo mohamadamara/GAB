@@ -10,10 +10,10 @@ export function Footer() {
     {
       title: t.footer.explore,
       items: [
+        { label: t.nav.home, href: "/" },
         { label: t.nav.services, href: "/services" },
-        { label: t.nav.work, href: "/work" },
-        { label: t.nav.howItWorks, href: "/how-it-works" },
-        { label: t.nav.builders, href: "/builders" },
+        { label: t.nav.projects, href: "/projects" },
+        { label: t.nav.process, href: "/how-it-works" },
       ],
     },
     {
@@ -52,7 +52,6 @@ export function Footer() {
       </div>
       <div className="container-wide">
         <div className="flex flex-col gap-4 border-t border-ink-900/10 py-6 font-mono text-[0.72rem] leading-relaxed text-ink-500 md:flex-row md:items-center md:justify-between">
-          <p className="max-w-2xl">{t.footer.note}</p>
           <p className="shrink-0">
             © {new Date().getFullYear()} GAB. {t.footer.rights}
           </p>

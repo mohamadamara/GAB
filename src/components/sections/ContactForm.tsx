@@ -8,7 +8,7 @@ import { easeOutExpo } from "../animations/Reveal";
 import { useLanguage } from "@/i18n/LanguageProvider";
 import type { Dict } from "@/i18n/dictionary";
 
-export const topics = [{ id: "general" }, { id: "partnership" }, { id: "developer" }, { id: "collaboration" }] as const;
+export const topics = [{ id: "project" }, { id: "existing" }, { id: "partnership" }, { id: "general" }] as const;
 
 type TopicId = (typeof topics)[number]["id"];
 type Values = { name: string; email: string; company: string; topic: TopicId; message: string; consent: boolean };
@@ -31,7 +31,7 @@ export function ContactForm() {
   const { t } = useLanguage();
   const f = t.form;
   const id = useId();
-  const [values, setValues] = useState<Values>({ name: "", email: "", company: "", topic: "general", message: "", consent: false });
+  const [values, setValues] = useState<Values>({ name: "", email: "", company: "", topic: "project", message: "", consent: false });
   const [touched, setTouched] = useState<Partial<Record<keyof Values, boolean>>>({});
   const [status, setStatus] = useState<"idle" | "validating" | "ready">("idle");
   const [copied, setCopied] = useState(false);
@@ -163,7 +163,7 @@ export function ContactForm() {
             onBlur={() => setTouched((t) => ({ ...t, message: true }))}
             aria-invalid={!!show("message")}
             aria-describedby={show("message") ? `${id}-message-err` : undefined}
-            placeholder={values.topic === "developer" ? f.placeholderDev : f.placeholder}
+            placeholder={values.topic === "project" ? f.placeholderProject : f.placeholder}
             className={cn(field, "resize-y py-3 leading-relaxed", border("message"))}
           />
           <FieldError id={`${id}-message-err`} msg={show("message") || undefined} />

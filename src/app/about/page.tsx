@@ -104,66 +104,11 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      {/* Future */}
-      <section className="relative overflow-hidden bg-mist py-24 sm:py-32">
-        <div aria-hidden className="bg-grid absolute inset-0 opacity-60 [mask-image:linear-gradient(to_bottom,transparent,black_30%,black_70%,transparent)]" />
-        <div className="container-gab relative">
-          <SectionHeading
-            index="05"
-            eyebrow={c.futureEyebrow}
-            title={
-              <>
-                {c.futureTitle[0]} <Accent>{c.futureTitle[1]}</Accent>
-              </>
-            }
-            lead={c.futureLead}
-          />
-          <div className="relative mt-16 grid gap-4 lg:grid-cols-3">
-            <div aria-hidden className="absolute inset-x-0 top-[27px] hidden h-px bg-gradient-to-r rtl:bg-gradient-to-l from-accent-500 via-accent-500/40 to-ink-900/10 lg:block" />
-            {c.horizon.map((h, i) => (
-              <Reveal key={h.phase} delay={i * 0.08}>
-                <div className="relative">
-                  <span
-                    className={
-                      "relative z-10 grid size-14 place-items-center rounded-full border font-mono text-sm " +
-                      (i === 0 ? "border-accent-400 bg-accent-500 text-[#080808]" : "border-ink-900/20 bg-white text-ink-600")
-                    }
-                  >
-                    0{i + 1}
-                  </span>
-                  <div className="metal-plate mt-6 rounded-[var(--radius-panel)] p-7">
-                    <div className="flex items-center justify-between gap-3">
-                      <h3 className="text-xl font-medium tracking-[-0.025em] text-ink-900">{h.phase}</h3>
-                      <span
-                        className={
-                          "rounded-[3px] px-2 py-0.5 font-mono text-[0.62rem] uppercase tracking-[0.14em] " +
-                          (i === 0 ? "bg-accent-500/20 text-accent-600" : "border border-ink-900/15 text-ink-500")
-                        }
-                      >
-                        {h.status}
-                      </span>
-                    </div>
-                    <ul className="mt-6 space-y-3">
-                      {h.items.map((it) => (
-                        <li key={it} className="flex gap-3 text-ink-600">
-                          <span aria-hidden className="mt-[11px] h-px w-4 shrink-0 bg-accent-400" />
-                          {it}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
       <FinalCta
         title={c.ctaTitle}
         text={c.ctaText}
-        cta={{ label: c.ctaPrimary, href: "/contact" }}
-        secondary={{ label: c.ctaSecondary, href: "/work" }}
+        cta={{ label: c.ctaPrimary, href: "/contact?topic=project" }}
+        secondary={{ label: c.ctaSecondary, href: "/projects" }}
       />
     </>
   );
