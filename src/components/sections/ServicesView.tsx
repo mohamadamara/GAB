@@ -71,14 +71,18 @@ export function ServicesView() {
                       transition={{ duration: 0.45, ease: easeOutExpo }}
                       className="overflow-hidden"
                     >
-                      <div className="grid gap-8 pb-9 ps-[calc(2.25rem+0.75rem)] sm:ps-[calc(4.5rem+0.75rem)] lg:grid-cols-[minmax(240px,0.55fr)_0.8fr_0.65fr_2.25rem] lg:gap-x-12 lg:ps-0">
+                      <div className="grid gap-8 pb-9 sm:ps-[calc(4.5rem+0.75rem)] lg:grid-cols-[minmax(240px,0.55fr)_0.8fr_0.65fr_2.25rem] lg:gap-x-12 lg:ps-0">
                         <div className="lg:col-start-2">
                           <p className="tracking-label font-mono text-[0.66rem] uppercase tracking-[0.22em] text-ink-500">{t.services.what}</p>
                           <p className="mt-3 max-w-2xl text-[0.98rem] leading-[1.8] text-ink-800">{copy.what}</p>
                           <p className="tracking-label mt-7 font-mono text-[0.66rem] uppercase tracking-[0.22em] text-ink-500">{t.services.features}</p>
-                          <p className="mt-3 font-mono text-[0.74rem] font-medium uppercase leading-[2] tracking-[0.16em] text-accent-600">
-                            {copy.features.join(" / ")}
-                          </p>
+                          <ul className="mt-3 flex flex-wrap gap-2">
+                            {copy.features.map((f) => (
+                              <li key={f} className="border border-accent-500/30 px-2.5 py-1 font-mono text-[0.74rem] font-medium text-accent-600">
+                                {f}
+                              </li>
+                            ))}
+                          </ul>
                         </div>
                         <div>
                           <p className="tracking-label font-mono text-[0.66rem] uppercase tracking-[0.22em] text-ink-500">{t.services.who}</p>

@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
+import { getLang } from "@/i18n/server";
+import { pageMeta } from "@/i18n/meta";
 import { ServicesView } from "@/components/sections/ServicesView";
 
-export const metadata: Metadata = {
-  title: "Services",
-  description:
-    "The software GAB is being built to help you find builders for: websites, mobile apps, SaaS, CRM, ERP, booking systems, dashboards, automation, e-commerce, AI and custom software.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMeta.services[await getLang()];
+}
 
 export default function ServicesPage() {
   return <ServicesView />;

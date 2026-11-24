@@ -1,44 +1,37 @@
-import { EnglishOnly } from "@/components/i18n/EnglishOnly";
 import type { Metadata } from "next";
-import { journey } from "@/data/journey";
 import { PageHero } from "@/components/layout/PageHero";
 import { SectionHeading, Accent } from "@/components/ui/SectionHeading";
 import { Walkthrough } from "@/components/sections/Walkthrough";
 import { Reveal, Stagger, StaggerItem } from "@/components/animations/Reveal";
 import { FinalCta } from "@/components/sections/FinalCta";
 import { ButtonLink } from "@/components/ui/Button";
+import { getLang } from "@/i18n/server";
+import { howItWorksCopy } from "@/i18n/pages/howItWorks";
 
-export const metadata: Metadata = {
-  title: "How It Works",
-  description:
-    "The GAB marketplace journey from first idea to selecting a software builder: describe, define, discover, compare, choose — with an interactive walkthrough.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const c = howItWorksCopy[await getLang()];
+  return { title: c.metaTitle, description: c.metaDescription };
+}
 
-const builderSide = [
-  ["Build a profile", "Skills, technologies, services and working style in one consistent format."],
-  ["Show your work", "Portfolio case studies that explain the problem, the solution and your role."],
-  ["See relevant projects", "Opportunities organised around clear scopes that match what you do."],
-  ["Propose with context", "Respond to structured briefs, so proposals start from shared understanding."],
-];
-
-export default function HowItWorksPage() {
+export default async function HowItWorksPage() {
+  const c = howItWorksCopy[await getLang()];
   return (
-    <EnglishOnly>
+    <>
       <PageHero
-        eyebrow="How it works"
+        eyebrow={c.eyebrow}
         title={
           <>
-            From the first idea <Accent>to the right builder.</Accent>
+            {c.title[0]} <Accent>{c.title[1]}</Accent>
           </>
         }
-        lead="GAB is being designed around one clear journey. Follow a simulated project — a clinic that needs an appointment booking system — through every step."
+        lead={c.lead}
       >
         <div className="flex flex-col gap-3 sm:flex-row">
           <ButtonLink href="#walkthrough" size="lg" arrow>
-            Start the walkthrough
+            {c.start}
           </ButtonLink>
           <ButtonLink href="/work" size="lg" variant="secondary">
-            Preview the platform
+            {c.preview}
           </ButtonLink>
         </div>
       </PageHero>
@@ -47,12 +40,12 @@ export default function HowItWorksPage() {
       <section className="border-t border-ink-900/[0.07] py-20 sm:py-24">
         <div className="container-gab">
           <Stagger className="grid gap-px overflow-hidden rounded-[var(--radius-panel)] border border-ink-900/10 bg-white/10 sm:grid-cols-2 lg:grid-cols-5">
-            {journey.map((s) => (
+            {c.steps.map((s) => (
               <StaggerItem key={s.key} className="group relative bg-white p-7 transition-colors hover:bg-white">
-                <span className="font-mono text-xs tracking-[0.2em] text-accent-600">STEP {s.n}</span>
+                <span className="font-mono text-xs tracking-[0.2em] text-accent-600">{c.stepLabel} {s.n}</span>
                 <h3 className="mt-4 text-2xl font-medium tracking-[-0.03em] text-ink-900">{s.title}</h3>
                 <p className="mt-3 text-[0.95rem] leading-relaxed text-ink-600">{s.text}</p>
-                <span aria-hidden className="absolute bottom-0 left-0 h-[2px] w-0 bg-accent-400 transition-[width] duration-700 group-hover:w-full" />
+                <span aria-hidden className="absolute bottom-0 start-0 h-[2px] w-0 bg-accent-400 transition-[width] duration-700 group-hover:w-full" />
               </StaggerItem>
             ))}
           </Stagger>
@@ -63,13 +56,13 @@ export default function HowItWorksPage() {
       <section id="walkthrough" className="scroll-mt-20 py-20 sm:py-28">
         <div className="container-gab">
           <SectionHeading
-            eyebrow="Interactive walkthrough"
+            eyebrow={c.walkEyebrow}
             title={
               <>
-                One project. <Accent>Five steps.</Accent>
+                {c.walkTitle[0]} <Accent>{c.walkTitle[1]}</Accent>
               </>
             }
-            lead="Use the steps or the buttons to move through the journey. Every name and number in this walkthrough is fictional and exists only to demonstrate how GAB is intended to work."
+            lead={c.walkLead}
           />
           <Reveal delay={0.1} className="mt-12">
             <Walkthrough />
@@ -82,17 +75,17 @@ export default function HowItWorksPage() {
         <div className="container-gab grid gap-14 lg:grid-cols-[1fr_1.3fr] lg:gap-24">
           <SectionHeading
             tone="light"
-            eyebrow="Meanwhile, on the builder side"
+            eyebrow={c.builderEyebrow}
             title={
               <>
-                Clear briefs make <Accent>better proposals.</Accent>
+                {c.builderTitle[0]} <Accent>{c.builderTitle[1]}</Accent>
               </>
             }
-            lead="The same structure that helps customers decide helps builders respond. Developers, studios and teams see projects that are already organised."
+            lead={c.builderLead}
           />
           <Stagger className="grid border-t border-ink-900/10 sm:grid-cols-2">
-            {builderSide.map(([t, d], i) => (
-              <StaggerItem key={t} className="border-b border-ink-900/10 py-8 sm:px-6 sm:[&:nth-child(odd)]:border-r sm:[&:nth-child(odd)]:pl-0">
+            {c.builderSide.map(([t, d], i) => (
+              <StaggerItem key={t} className="border-b border-ink-900/10 py-8 sm:px-6 sm:[&:nth-child(odd)]:border-e sm:[&:nth-child(odd)]:ps-0">
                 <span className="font-mono text-xs text-accent-600">0{i + 1}</span>
                 <h3 className="mt-3 text-xl font-medium tracking-[-0.025em]">{t}</h3>
                 <p className="mt-2 leading-relaxed text-ink-600">{d}</p>
@@ -103,11 +96,11 @@ export default function HowItWorksPage() {
       </section>
 
       <FinalCta
-        title="Have a project in mind?"
-        text="GAB is not open to projects yet. Tell us what you'd like to build and we'll keep you informed as the platform develops."
-        cta={{ label: "Register your interest", href: "/contact?topic=general" }}
-        secondary={{ label: "Explore services", href: "/services" }}
+        title={c.ctaTitle}
+        text={c.ctaText}
+        cta={{ label: c.ctaPrimary, href: "/contact?topic=general" }}
+        secondary={{ label: c.ctaSecondary, href: "/services" }}
       />
-    </EnglishOnly>
+    </>
   );
 }

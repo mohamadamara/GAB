@@ -6,19 +6,50 @@ import { demoBuilders, demoProject, demoProposals } from "@/data/demo";
 import { cn } from "@/lib/cn";
 import { DemoBadge } from "../ui/DemoBadge";
 import { easeOutExpo } from "../animations/Reveal";
+import { useLanguage } from "@/i18n/LanguageProvider";
 
 /**
  * Interactive product walkthrough: a simulated booking-system project
  * moving through the five GAB steps. All data is fictional.
  */
 
-const steps = [
-  { n: "01", title: "Explain the problem", short: "Describe", caption: "The business owner describes the situation in everyday language." },
-  { n: "02", title: "Structure the requirements", short: "Define", caption: "The description is organised into goals, users and prioritised features." },
-  { n: "03", title: "Discover relevant builders", short: "Discover", caption: "Builders whose skills fit the scope are surfaced for exploration." },
-  { n: "04", title: "Compare profiles & proposals", short: "Compare", caption: "Proposals are laid side by side on the same criteria." },
-  { n: "05", title: "Choose a builder", short: "Choose", caption: "The owner selects the best fit with a shared, documented starting point." },
-];
+const stepsByLang = {
+  en: [
+    { n: "01", title: "Explain the problem", short: "Describe", caption: "The business owner describes the situation in everyday language." },
+    { n: "02", title: "Structure the requirements", short: "Define", caption: "The description is organised into goals, users and prioritised features." },
+    { n: "03", title: "Discover relevant builders", short: "Discover", caption: "Builders whose skills fit the scope are surfaced for exploration." },
+    { n: "04", title: "Compare profiles & proposals", short: "Compare", caption: "Proposals are laid side by side on the same criteria." },
+    { n: "05", title: "Choose a builder", short: "Choose", caption: "The owner selects the best fit with a shared, documented starting point." },
+  ],
+  he: [
+    { n: "01", title: "מסבירים את הבעיה", short: "מתארים", caption: "בעלת המרפאה מתארת את המצב במילים פשוטות, בלי מונחים טכניים." },
+    { n: "02", title: "מסדרים את הדרישות", short: "מגדירים", caption: "התיאור הופך למטרות, למשתמשים ולרשימת פיצ׳רים לפי סדר עדיפות." },
+    { n: "03", title: "מוצאים מפתחים מתאימים", short: "מוצאים", caption: "מוצגים מפתחים שהכישורים שלהם מתאימים להיקף הפרויקט." },
+    { n: "04", title: "משווים פרופילים והצעות", short: "משווים", caption: "ההצעות מוצגות זו לצד זו, לפי אותם קריטריונים." },
+    { n: "05", title: "בוחרים צוות", short: "בוחרים", caption: "בוחרים את הצוות המתאים ביותר, עם נקודת פתיחה מוסכמת וכתובה." },
+  ],
+};
+
+const chrome = {
+  en: {
+    project: "Simulated project",
+    projectName: null as string | null,
+    badge: "Demonstration · fictional data",
+    stepsLabel: "Walkthrough steps",
+    back: "Back",
+    next: "Next step",
+    restart: "Restart",
+  },
+  he: {
+    project: "פרויקט לדוגמה",
+    projectName: "מערכת זימון תורים למרפאה",
+    badge: "הדגמה · נתונים בדויים",
+    stepsLabel: "שלבי ההדגמה",
+    back: "הקודם",
+    next: "לשלב הבא",
+    restart: "מההתחלה",
+  },
+};
 
 const fade = (i = 0) => ({
   initial: { opacity: 0, y: 12 },
@@ -253,6 +284,9 @@ function StepChoose() {
 const panels = [StepDescribe, StepDefine, StepDiscover, StepCompare, StepChoose];
 
 export function Walkthrough() {
+  const { lang } = useLanguage();
+  const steps = stepsByLang[lang];
+  const ui = chrome[lang];
   const [step, setStep] = useState(0);
   const Panel = panels[step];
 
@@ -261,14 +295,14 @@ export function Walkthrough() {
       {/* Header */}
       <div className="flex flex-col gap-4 border-b border-ink-900/10 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
         <div>
-          <p className="font-mono text-[0.65rem] uppercase tracking-[0.18em] text-ink-500">Simulated project</p>
-          <p className="mt-1 text-lg font-medium tracking-tight text-ink-900">{demoProject.name}</p>
+          <p className="font-mono text-[0.65rem] uppercase tracking-[0.18em] text-ink-500">{ui.project}</p>
+          <p className="mt-1 text-lg font-medium tracking-tight text-ink-900">{ui.projectName ?? demoProject.name}</p>
         </div>
-        <DemoBadge>Demonstration · fictional data</DemoBadge>
+        <DemoBadge>{ui.badge}</DemoBadge>
       </div>
 
       {/* Steps */}
-      <div role="tablist" aria-label="Walkthrough steps" className="scrollbar-none grid grid-cols-5 border-b border-ink-900/10">
+      <div role="tablist" aria-label={ui.stepsLabel} className="scrollbar-none grid grid-cols-5 border-b border-ink-900/10">
         {steps.map((s, i) => (
           <button
             key={s.n}
@@ -277,7 +311,7 @@ export function Walkthrough() {
             aria-controls="walkthrough-panel"
             onClick={() => setStep(i)}
             className={cn(
-              "relative px-2 py-4 text-center transition-colors sm:px-4 sm:text-left",
+              "relative px-1 py-4 text-center transition-colors sm:px-4 sm:text-start",
               step === i ? "bg-mist text-ink-900" : "text-ink-500 hover:text-ink-900",
             )}
           >
@@ -297,7 +331,9 @@ export function Walkthrough() {
             <p className="mb-5 text-[13px] text-ink-600">
               <span className="font-semibold text-ink-900">{steps[step].title}.</span> {steps[step].caption}
             </p>
-            <Panel />
+            <div lang="en" dir="ltr">
+              <Panel />
+            </div>
           </motion.div>
         </AnimatePresence>
       </div>
@@ -309,7 +345,7 @@ export function Walkthrough() {
           disabled={step === 0}
           className="h-10 rounded border border-ink-900/15 px-4 text-sm text-ink-900 transition-colors hover:border-accent-400 disabled:opacity-30"
         >
-          ← Back
+          <span aria-hidden className="inline-block rtl:-scale-x-100">←</span> {ui.back}
         </button>
         <div className="flex gap-1.5" aria-hidden>
           {steps.map((s, i) => (
@@ -318,11 +354,11 @@ export function Walkthrough() {
         </div>
         {step < steps.length - 1 ? (
           <button onClick={() => setStep((s) => s + 1)} className="h-10 rounded bg-accent-500 px-4 text-sm font-medium text-[#080808] transition-colors hover:bg-accent-400">
-            Next step →
+            {ui.next} <span aria-hidden className="inline-block rtl:-scale-x-100">→</span>
           </button>
         ) : (
           <button onClick={() => setStep(0)} className="h-10 rounded border border-accent-400 px-4 text-sm text-accent-600 transition-colors hover:bg-accent-500/10">
-            Restart ↺
+            {ui.restart} ↺
           </button>
         )}
       </div>

@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
+import { getLang } from "@/i18n/server";
+import { pageMeta } from "@/i18n/meta";
 import { ContactView } from "@/components/sections/ContactView";
 
-export const metadata: Metadata = {
-  title: "Contact",
-  description: "Get in touch with GAB about general inquiries, business partnerships, developer interest or collaboration opportunities.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMeta.contact[await getLang()];
+}
 
 export default function ContactPage() {
   return <ContactView />;

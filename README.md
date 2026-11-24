@@ -30,7 +30,8 @@ src/
     sections/          Shared page sections (walkthrough, platform explorer, FAQ, contact form, service visuals)
     mockups/           Product design system + the 10 platform preview screens
   data/                Content: services, journey, FAQ, nav, demo (fictional) data
-  i18n/                English/Hebrew: dictionary.ts (UI copy), services.he.ts, LanguageProvider (cookie-based, sets <html lang dir>)
+  i18n/                English/Hebrew: dictionary.ts (UI copy), services.he.ts, pages/ (copy for About, How it works,
+                       For builders, FAQ), meta.ts (page titles), server.ts (getLang), LanguageProvider (cookie, <html lang dir>)
   lib/                 Utilities
   app/globals.css      Design tokens (black / gold / warm white, terminal-style mono type)
 ```
@@ -38,8 +39,11 @@ src/
 ## Languages
 
 English and Hebrew. The header switch stores the choice in the `gab-lang` cookie, so the server renders
-`<html lang dir>` directly (RTL for Hebrew). Home, Services, Work, Contact, header and footer are fully translated;
-About, How it works, For builders and FAQ are still English-only and show a notice in Hebrew mode.
+`<html lang dir>` directly (RTL for Hebrew). Every page is translated, including titles and meta descriptions.
+Client components read copy with `useLanguage()`; server pages call `getLang()` from `src/i18n/server.ts`.
+The platform mockups themselves stay in English (they sit inside `lang="en" dir="ltr"` islands) and say so.
+Hebrew copy is written for Israeli readers, not translated word for word: "builders" are מפתחים / צוותי פיתוח,
+and readers are addressed in the plural (אתם).
 Animations respect `prefers-reduced-motion`.
 
 ## Honesty rules baked in
