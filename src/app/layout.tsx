@@ -29,31 +29,35 @@ const plexHebrew = IBM_Plex_Sans_Hebrew({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(site.url),
-  title: {
-    default: "GAB — Your Idea. The Right Builders. One Place.",
-    template: "%s · GAB",
+const homeMeta = {
+  en: { title: "GAB — Your Idea. The Right Builders. One Place.", description: site.description },
+  he: {
+    title: "GAB — הרעיון שלכם. המפתחים הנכונים. במקום אחד.",
+    description: "GAB היא פלטפורמה לפיתוח תוכנה שנמצאת בהקמה — ומחברת בין אנשים ועסקים שצריכים מוצר דיגיטלי לבין מפתחים עצמאיים, סטודיואים וצוותי פיתוח.",
   },
-  description: site.description,
-  applicationName: "GAB",
-  keywords: [
-    "software development marketplace",
-    "find software developers",
-    "hire development studio",
-    "software builders",
-    "custom software",
-    "GAB",
-  ],
-  openGraph: {
-    type: "website",
-    siteName: "GAB",
-    title: "GAB — Your Idea. The Right Builders. One Place.",
-    description: site.description,
-  },
-  twitter: { card: "summary_large_image", title: "GAB", description: site.description },
-  icons: { icon: "/icon.svg" },
 };
+
+export async function generateMetadata(): Promise<Metadata> {
+  const stored = (await cookies()).get(LANG_COOKIE)?.value;
+  const m = homeMeta[isLang(stored) ? stored : DEFAULT_LANG];
+  return {
+    metadataBase: new URL(site.url),
+    title: { default: m.title, template: "%s · GAB" },
+    description: m.description,
+    applicationName: "GAB",
+    keywords: [
+      "software development marketplace",
+      "find software developers",
+      "hire development studio",
+      "software builders",
+      "custom software",
+      "GAB",
+    ],
+    openGraph: { type: "website", siteName: "GAB", title: m.title, description: m.description },
+    twitter: { card: "summary_large_image", title: "GAB", description: m.description },
+    icons: { icon: "/icon.svg" },
+  };
+}
 
 export const viewport: Viewport = {
   themeColor: "#080807",

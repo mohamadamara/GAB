@@ -6,13 +6,7 @@ import type { Faq } from "@/data/faq";
 import { cn } from "@/lib/cn";
 import { easeOutExpo } from "../animations/Reveal";
 
-const statusLabel = {
-  available: "Available now",
-  planned: "Planned",
-  info: "About GAB",
-} as const;
-
-export function FaqList({ items }: { items: Faq[] }) {
+export function FaqList({ items, labels }: { items: Faq[]; labels: Record<NonNullable<Faq["status"]>, string> }) {
   const [open, setOpen] = useState<number | null>(0);
   const base = useId();
 
@@ -30,10 +24,10 @@ export function FaqList({ items }: { items: Faq[] }) {
                 aria-expanded={isOpen}
                 aria-controls={panel}
                 onClick={() => setOpen(isOpen ? null : i)}
-                className="group flex w-full items-start gap-5 py-7 text-left"
+                className="group flex w-full items-start gap-4 py-6 text-start sm:gap-5 sm:py-7"
               >
                 <span className="mt-1.5 font-mono text-xs text-accent-600">{String(i + 1).padStart(2, "0")}</span>
-                <span className={cn("flex-1 text-xl font-medium tracking-[-0.025em] transition-colors sm:text-2xl", isOpen ? "text-ink-900" : "text-ink-600 group-hover:text-ink-900")}>
+                <span className={cn("flex-1 text-lg font-medium leading-snug tracking-[-0.025em] transition-colors sm:text-2xl", isOpen ? "text-ink-900" : "text-ink-600 group-hover:text-ink-900")}>
                   {f.q}
                 </span>
                 <span
@@ -60,7 +54,7 @@ export function FaqList({ items }: { items: Faq[] }) {
                   transition={{ duration: 0.45, ease: easeOutExpo }}
                   className="overflow-hidden"
                 >
-                  <div className="pb-8 pl-10 pr-12 sm:pl-12">
+                  <div className="pb-8 ps-9 sm:pe-12 sm:ps-12">
                     {f.status && (
                       <span
                         className={cn(
@@ -68,10 +62,10 @@ export function FaqList({ items }: { items: Faq[] }) {
                           f.status === "planned" ? "border border-accent-500/40 text-accent-600" : "border border-ink-900/15 text-ink-500",
                         )}
                       >
-                        {statusLabel[f.status]}
+                        {labels[f.status]}
                       </span>
                     )}
-                    <p className="max-w-3xl text-lg leading-relaxed text-ink-600">{f.a}</p>
+                    <p className="max-w-3xl text-base leading-relaxed text-ink-600 sm:text-lg">{f.a}</p>
                   </div>
                 </motion.div>
               )}

@@ -28,8 +28,8 @@ export function Footer() {
 
   return (
     <footer className="border-t border-accent-500/15 bg-paper">
-      <div className="container-wide grid gap-12 py-14 md:grid-cols-[1.4fr_1fr_1fr]">
-        <div className="max-w-sm">
+      <div className="container-wide grid grid-cols-2 gap-x-6 gap-y-10 py-12 md:grid-cols-[1.4fr_1fr_1fr] md:gap-12 md:py-14">
+        <div className="col-span-2 max-w-sm md:col-span-1">
           <Link href="/" aria-label={t.homeLabel} className="inline-block" dir="ltr">
             <Logo tagline className="h-16" />
           </Link>
@@ -38,10 +38,10 @@ export function Footer() {
         {cols.map((col) => (
           <div key={col.title}>
             <h2 className="tracking-label font-mono text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-accent-600">{col.title}</h2>
-            <ul className="mt-5 space-y-3">
+            <ul className="mt-4 space-y-1">
               {col.items.map((item) => (
                 <li key={item.href}>
-                  <Link href={item.href} className="font-mono text-sm text-ink-800 transition-colors hover:text-accent-600">
+                  <Link href={item.href} className="inline-block py-2 font-mono text-sm text-ink-800 transition-colors hover:text-accent-600">
                     {item.label}
                   </Link>
                 </li>

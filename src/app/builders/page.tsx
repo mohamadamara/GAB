@@ -1,4 +1,3 @@
-import { EnglishOnly } from "@/components/i18n/EnglishOnly";
 import type { Metadata } from "next";
 import { PageHero } from "@/components/layout/PageHero";
 import { SectionHeading, Accent } from "@/components/ui/SectionHeading";
@@ -8,63 +7,48 @@ import { ButtonLink } from "@/components/ui/Button";
 import { DemoBadge } from "@/components/ui/DemoBadge";
 import { ScaledFrame } from "@/components/mockups/AppFrame";
 import { BuilderDashboardScreen, BuilderProfileScreen } from "@/components/mockups/screens";
+import { getLang } from "@/i18n/server";
+import { buildersCopy } from "@/i18n/pages/builders";
 
-export const metadata: Metadata = {
-  title: "For Builders",
-  description:
-    "Why independent developers, software studios and development teams should join the GAB marketplace: professional profiles, portfolios, services and relevant project opportunities.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const c = buildersCopy[await getLang()];
+  return { title: c.metaTitle, description: c.metaDescription };
+}
 
-const features = [
-  { t: "Professional profiles", d: "A consistent, credible profile that presents who you are, how you work and what you're best at.", k: "PRF" },
-  { t: "Technical skills", d: "Show the depth of your expertise — from domains like booking or ERP to disciplines like UX or DevOps.", k: "SKL" },
-  { t: "Technologies", d: "List the languages, frameworks and platforms you actually work with, so matches are meaningful.", k: "TEC" },
-  { t: "Portfolio", d: "Case studies structured around the problem, the solution and your role — not just screenshots.", k: "PFL" },
-  { t: "Services", d: "Define what you offer: discovery, design, development, integration, maintenance and more.", k: "SRV" },
-  { t: "Project opportunities", d: "Browse projects that arrive already organised into goals, users and prioritised features.", k: "OPP" },
-  { t: "Customer discovery", d: "Be found by businesses searching for exactly the skills and experience you bring.", k: "DSC" },
-  { t: "Project matching", d: "Planned matching that relates project scopes to builder profiles, highlighting relevant opportunities.", k: "MCH" },
-];
-
-const who = [
-  { t: "Independent developers", d: "Freelancers and solo engineers who want quality projects without endless cold outreach." },
-  { t: "Development studios", d: "Small and mid-sized studios looking for clients whose projects fit their specialism." },
-  { t: "Technical teams", d: "Established teams that take on larger platforms and long-term engagements." },
-];
-
-export default function BuildersPage() {
+export default async function BuildersPage() {
+  const c = buildersCopy[await getLang()];
   return (
-    <EnglishOnly>
+    <>
       <PageHero
-        eyebrow="For builders"
+        eyebrow={c.eyebrow}
         title={
           <>
-            Your skills, <Accent>in front of the right projects.</Accent>
+            {c.title[0]} <Accent>{c.title[1]}</Accent>
           </>
         }
-        lead="GAB is being built for independent developers, software studios and technical teams who want to be discovered for what they do best — and spend less time chasing work that doesn't fit."
+        lead={c.lead}
       >
         <div className="flex flex-col gap-3 sm:flex-row">
           <ButtonLink href="/contact?topic=developer" size="lg" arrow>
-            Become a Builder
+            {c.join}
           </ButtonLink>
           <ButtonLink href="#profile" size="lg" variant="secondary">
-            See an example profile
+            {c.seeProfile}
           </ButtonLink>
         </div>
         <p className="mt-5 text-sm text-ink-500">
-          Builder registration isn't open yet. “Become a Builder” lets you register interest so we can keep you informed.
+          {c.joinNote}
         </p>
       </PageHero>
 
       {/* Who */}
       <section className="border-t border-ink-900/[0.07] py-20">
         <div className="container-gab grid gap-px overflow-hidden rounded-[var(--radius-panel)] border border-ink-900/10 bg-white/10 md:grid-cols-3">
-          {who.map((w, i) => (
-            <Reveal key={w.t} delay={i * 0.06} className="bg-white p-8 sm:p-10">
+          {c.who.map(([title, text], i) => (
+            <Reveal key={title} delay={i * 0.06} className="bg-white p-8 sm:p-10">
               <span className="font-mono text-xs text-accent-600">0{i + 1}</span>
-              <h2 className="mt-5 text-2xl font-medium tracking-[-0.03em] text-ink-900">{w.t}</h2>
-              <p className="mt-3 leading-relaxed text-ink-600">{w.d}</p>
+              <h2 className="mt-5 text-2xl font-medium tracking-[-0.03em] text-ink-900">{title}</h2>
+              <p className="mt-3 leading-relaxed text-ink-600">{text}</p>
             </Reveal>
           ))}
         </div>
@@ -75,21 +59,21 @@ export default function BuildersPage() {
         <div className="container-gab">
           <SectionHeading
             tone="light"
-            eyebrow="Why join GAB"
+            eyebrow={c.whyEyebrow}
             title={
               <>
-                Everything you need to be <Accent>understood and chosen.</Accent>
+                {c.whyTitle[0]} <Accent>{c.whyTitle[1]}</Accent>
               </>
             }
-            lead="These are the capabilities GAB is being designed to give builders. They are planned features of a platform in development."
+            lead={c.whyLead}
           />
-          <Stagger className="mt-16 grid border-l border-t border-ink-900/10 sm:grid-cols-2 lg:grid-cols-4">
-            {features.map((f) => (
-              <StaggerItem key={f.t} className="group relative border-b border-r border-ink-900/10 p-7 transition-colors duration-500 hover:bg-stone-100">
-                <span className="font-mono text-[0.68rem] tracking-[0.2em] text-accent-600">{f.k}</span>
-                <h3 className="mt-6 text-lg font-medium tracking-[-0.02em]">{f.t}</h3>
-                <p className="mt-2.5 text-[0.95rem] leading-relaxed text-ink-600">{f.d}</p>
-                <span aria-hidden className="absolute left-0 top-0 h-[2px] w-0 bg-accent-500 transition-[width] duration-700 group-hover:w-full" />
+          <Stagger className="mt-16 grid border-s border-t border-ink-900/10 sm:grid-cols-2 lg:grid-cols-4">
+            {c.features.map(([code, title, text]) => (
+              <StaggerItem key={code} className="group relative border-b border-e border-ink-900/10 p-7 transition-colors duration-500 hover:bg-stone-100">
+                <span className="font-mono text-[0.68rem] tracking-[0.2em] text-accent-600">{code}</span>
+                <h3 className="mt-6 text-lg font-medium tracking-[-0.02em]">{title}</h3>
+                <p className="mt-2.5 text-[0.95rem] leading-relaxed text-ink-600">{text}</p>
+                <span aria-hidden className="absolute start-0 top-0 h-[2px] w-0 bg-accent-500 transition-[width] duration-700 group-hover:w-full" />
               </StaggerItem>
             ))}
           </Stagger>
@@ -101,15 +85,15 @@ export default function BuildersPage() {
         <div className="container-gab">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <SectionHeading
-              eyebrow="Example builder profile"
+              eyebrow={c.profileEyebrow}
               title={
                 <>
-                  A profile that <Accent>does the explaining.</Accent>
+                  {c.profileTitle[0]} <Accent>{c.profileTitle[1]}</Accent>
                 </>
               }
-              lead="Skills, technologies, services, portfolio and availability — presented the same way for every builder, so customers can compare with confidence."
+              lead={c.profileLead}
             />
-            <DemoBadge className="self-start lg:self-auto">Fictional sample profile</DemoBadge>
+            <DemoBadge className="self-start lg:self-auto">{c.profileBadge}</DemoBadge>
           </div>
           <Reveal delay={0.1} className="mt-12">
             <ScaledFrame width={1120}>
@@ -124,16 +108,16 @@ export default function BuildersPage() {
         <div className="container-gab grid items-center gap-14 lg:grid-cols-[0.8fr_1.4fr]">
           <div>
             <SectionHeading
-              eyebrow="Your workspace"
+              eyebrow={c.workspaceEyebrow}
               title={
                 <>
-                  Opportunities, <Accent>organised.</Accent>
+                  {c.workspaceTitle[0]} <Accent>{c.workspaceTitle[1]}</Accent>
                 </>
               }
-              lead="A planned builder dashboard surfaces projects relevant to your profile, tracks the proposals you've sent and shows how to strengthen your presence."
+              lead={c.workspaceLead}
             />
             <ul className="mt-10 space-y-4">
-              {["Projects related to your skills", "Proposal pipeline at a glance", "Profile strength guidance"].map((t) => (
+              {c.workspacePoints.map((t) => (
                 <li key={t} className="flex items-center gap-3 text-ink-900">
                   <span aria-hidden className="h-px w-6 bg-accent-400" />
                   {t}
@@ -145,17 +129,17 @@ export default function BuildersPage() {
             <ScaledFrame width={1120}>
               <BuilderDashboardScreen />
             </ScaledFrame>
-            <p className="mt-4 font-mono text-[0.65rem] uppercase tracking-[0.16em] text-ink-500">Concept preview · demonstration values</p>
+            <p className="mt-4 font-mono text-[0.65rem] uppercase tracking-[0.16em] text-ink-500">{c.workspaceNote}</p>
           </Reveal>
         </div>
       </section>
 
       <FinalCta
-        title="Build what matters. Get found for it."
-        text="Register your interest as a developer, studio or technical team. We'll share updates as GAB moves toward its first release."
-        cta={{ label: "Become a Builder", href: "/contact?topic=developer" }}
-        secondary={{ label: "Read the FAQ", href: "/faq" }}
+        title={c.ctaTitle}
+        text={c.ctaText}
+        cta={{ label: c.join, href: "/contact?topic=developer" }}
+        secondary={{ label: c.ctaSecondary, href: "/faq" }}
       />
-    </EnglishOnly>
+    </>
   );
 }

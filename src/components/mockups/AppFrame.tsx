@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/cn";
 import { MAvatar, MIcon, icons } from "./primitives";
 import { Logo } from "../ui/Logo";
+import { useLanguage } from "@/i18n/LanguageProvider";
 
 export type AppRole = "customer" | "builder" | "admin";
 
@@ -109,21 +110,36 @@ export function AppFrame({
 }
 
 /**
- * Renders a fixed-width product screen and scales it to fit any container,
- * so mockups keep their proportions on tablet and mobile.
+ * Renders a fixed-width product screen and scales it to fit its container, so mockups keep
+ * their proportions on tablet and mobile. Below `minScale` the text would be unreadable
+ * (a 1120px screen on a 375px phone is ~0.3×), so instead it stays at `minScale` and the
+ * frame becomes horizontally swipeable, with a short hint underneath.
  */
-export function ScaledFrame({ width = 1120, children, className }: { width?: number; children: React.ReactNode; className?: string }) {
+export function ScaledFrame({
+  width = 1120,
+  minScale = 0.55,
+  children,
+  className,
+}: {
+  width?: number;
+  minScale?: number;
+  children: React.ReactNode;
+  className?: string;
+}) {
+  const { t } = useLanguage();
   const outer = useRef<HTMLDivElement>(null);
   const inner = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
   const [height, setHeight] = useState<number | undefined>(undefined);
+  const [pans, setPans] = useState(false);
 
   useEffect(() => {
     if (!outer.current || !inner.current) return;
     const update = () => {
-      const w = outer.current!.clientWidth;
-      const s = Math.min(1, w / width);
+      const fit = Math.min(1, outer.current!.clientWidth / width);
+      const s = Math.max(fit, minScale);
       setScale(s);
+      setPans(fit < minScale);
       setHeight(inner.current!.offsetHeight * s);
     };
     update();
@@ -131,13 +147,34 @@ export function ScaledFrame({ width = 1120, children, className }: { width?: num
     ro.observe(outer.current);
     ro.observe(inner.current);
     return () => ro.disconnect();
-  }, [width]);
+  }, [width, minScale]);
 
+  // `contain: inline-size` keeps the 1120px screen from widening the frame's own box: otherwise,
+  // inside an auto-sized grid column, the frame would measure its content and never scale down.
   return (
-    <div ref={outer} lang="en" dir="ltr" className={cn("relative w-full font-sans", className)} style={{ height }}>
-      <div ref={inner} style={{ width, transform: `scale(${scale})`, transformOrigin: "top left" }} className="absolute left-0 top-0">
-        {children}
+    <div className={cn("w-full min-w-0", className)}>
+      <div
+        ref={outer}
+        lang="en"
+        dir="ltr"
+        className={cn("relative w-full font-sans [contain:inline-size]", pans && "scrollbar-none overflow-x-auto overscroll-x-contain")}
+        style={{ height }}
+        tabIndex={pans ? 0 : undefined}
+        role={pans ? "region" : undefined}
+        aria-label={pans ? t.work.panLabel : undefined}
+      >
+        <div className="relative" style={{ width: width * scale, height }}>
+          <div ref={inner} style={{ width, transform: `scale(${scale})`, transformOrigin: "top left" }} className="absolute left-0 top-0">
+            {children}
+          </div>
+        </div>
       </div>
+      {pans && (
+        <p className="mt-3 flex items-center gap-2 font-mono text-[0.72rem] text-ink-500">
+          <span aria-hidden className="text-accent-600">⇆</span>
+          {t.work.pan}
+        </p>
+      )}
     </div>
   );
 }

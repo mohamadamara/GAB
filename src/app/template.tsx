@@ -1,16 +1,8 @@
-"use client";
-
-import { motion } from "framer-motion";
-
-/** Page transition: a calm fade-and-lift on every route change. */
+/**
+ * Page transition: a calm fade on every route change (the template re-mounts per navigation,
+ * so the CSS animation replays). Done in CSS rather than Framer's `initial={{ opacity: 0 }}`
+ * so the server-rendered page is never stuck invisible while JavaScript loads on a slow phone.
+ */
 export default function Template({ children }: { children: React.ReactNode }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-    >
-      {children}
-    </motion.div>
-  );
+  return <div className="page-enter">{children}</div>;
 }

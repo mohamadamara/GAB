@@ -209,8 +209,39 @@
   text-transform: uppercase;
 }
 /* Hebrew has no case and needs no negative tracking */
-.font-display:lang(he) { letter-spacing: -0.01em; font-family: var(--font-plex-hebrew), var(--font-display); font-weight: 700; }
+.font-display:lang(he) { text-transform: none; letter-spacing: -0.01em; font-family: var(--font-plex-hebrew), var(--font-display); font-weight: 700; }
 .tracking-label:lang(he) { letter-spacing: 0.02em !important; }
+
+/*
+ * Hebrew reading text. IBM Plex Mono has no Hebrew glyphs, so Hebrew fell back to Plex Sans
+ * Hebrew while spaces kept the monospace width — words looked spread apart. In Hebrew we set
+ * the proportional Hebrew face first, and drop the wide label tracking (Hebrew has no case).
+ * English islands (mockups, code) carry lang="en" and are unaffected.
+ */
+:lang(he) body,
+.font-mono:lang(he) {
+  font-family: var(--font-plex-hebrew), var(--font-mono);
+}
+.font-mono:lang(he),
+.uppercase:lang(he) {
+  letter-spacing: 0.01em;
+}
+
+/*
+ * Entrance animation that does not depend on JavaScript: the content is in the HTML and
+ * visible even before hydration (or if JS fails), unlike Framer's `initial={{ opacity: 0 }}`.
+ * Usage: className="rise" style={{ "--rise-delay": "120ms" }}
+ */
+.rise {
+  animation: rise 0.8s var(--ease-out-expo) both;
+  animation-delay: var(--rise-delay, 0ms);
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+.page-enter { animation: page-enter 0.5s var(--ease-out-expo) both; }
+@keyframes page-enter { from { opacity: 0; } to { opacity: 1; } }
 
 /* Blinking terminal caret */
 .caret::after {
