@@ -1,0 +1,25 @@
+/**
+ * Cloudflare Workers config for the GAB website (Next.js via OpenNext).
+ * Build + deploy: `npm run deploy`  ·  Local test in the Workers runtime: `npm run preview`
+ */
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "gab",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "services": [
+    {
+      // Lets the worker call itself (used by OpenNext for caching/revalidation)
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "gab"
+    }
+  ],
+  "observability": {
+    "enabled": true
+  }
+}
