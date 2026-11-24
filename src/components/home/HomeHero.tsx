@@ -6,7 +6,7 @@ import { ButtonLink } from "../ui/Button";
 import { rise } from "../animations/rise";
 import { Blueprint } from "./Blueprint";
 
-/** The whole home screen: one viewport, no long scroll. Sections live behind the header links. */
+/** First screen of the home page: positioning, CTAs and the animated blueprint. */
 export function HomeHero() {
   const { t } = useLanguage();
 
@@ -40,11 +40,11 @@ export function HomeHero() {
           </p>
 
           <div {...rise(0.5, "mt-9 flex flex-wrap items-center gap-x-8 gap-y-4")}>
-            <ButtonLink href="/how-it-works" size="lg">
+            <ButtonLink href="/contact?topic=project" size="lg" arrow>
               {t.home.primary}
             </ButtonLink>
             <Link
-              href="/work"
+              href="/projects"
               className="tracking-label border-b border-ink-900/40 pb-1.5 font-mono text-[0.82rem] font-semibold uppercase tracking-[0.18em] text-ink-900 transition-colors hover:border-accent-500 hover:text-accent-600"
             >
               {t.home.secondary}

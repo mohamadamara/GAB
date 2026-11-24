@@ -44,16 +44,16 @@ export default async function FaqPage() {
                 {c.statusText}
               </p>
               <div className="mt-6 flex flex-col gap-2">
-                <ButtonLink href="/contact" arrow>
+                <ButtonLink href="/contact?topic=general" arrow>
                   {c.ask}
                 </ButtonLink>
-                <ButtonLink href="/work" variant="secondary">
+                <ButtonLink href="/projects" variant="secondary">
                   {c.preview}
                 </ButtonLink>
               </div>
             </div>
           </Reveal>
-          <FaqList items={c.items} labels={c.labels} />
+          <FaqList items={c.items} />
         </div>
       </section>
     </>
