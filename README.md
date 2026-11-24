@@ -7,13 +7,39 @@ business systems — from planning and design to launch and ongoing support. Eng
 
 ```bash
 npm install
-npm run dev      # http://localhost:3000
-npm run build && npm start   # production
+npm run dev       # http://localhost:3000 (Next.js dev server)
+npm run preview   # build for Cloudflare and run it locally in the Workers runtime: http://localhost:8787
+npm run deploy    # build and deploy to Cloudflare Workers (needs `npx wrangler login` once)
 ```
 
 ## Stack
 
-Next.js 15 (App Router) · TypeScript · Tailwind CSS v4 · Framer Motion
+Next.js 15 (App Router) · TypeScript · Tailwind CSS v4 · Framer Motion ·
+hosted on **Cloudflare Workers** via [OpenNext](https://opennext.js.org/cloudflare)
+
+## Hosting (Cloudflare Workers)
+
+The site is built with `@opennextjs/cloudflare` and deployed as the Worker named `gab` (see `wrangler.jsonc`).
+The worker is ~1.4 MiB gzipped, inside the Workers Free plan limit (3 MiB).
+
+**Automatic deploys from GitHub (recommended).** In the Cloudflare dashboard: *Workers & Pages → Create →
+Import a repository*, pick this repo, and set:
+
+| Setting | Value |
+| --- | --- |
+| Project name | `gab` (must match `name` in `wrangler.jsonc`) |
+| Production branch | `main` |
+| Build command | `npx opennextjs-cloudflare build` |
+| Deploy command | `npx opennextjs-cloudflare deploy` |
+
+Every merge to `main` then deploys automatically.
+
+**Custom domain.** In the Worker: *Settings → Domains & Routes → Add → Custom domain*, add the apex domain and
+`www`. Because the domain's DNS is already on Cloudflare, the records and certificate are created automatically
+(delete any old `A`/`CNAME` records for `@` and `www` first). Then set the domain in `src/lib/site.ts`.
+
+**Images.** Next's image optimizer isn't used on Workers (`images.unoptimized`), so add project images already
+resized (≈1600px wide) and compressed.
 
 ## Structure
 

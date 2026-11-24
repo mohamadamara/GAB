@@ -4,5 +4,5 @@ export const site = {
   slogan: "Grow. Automate. Build.",
   description:
     "GAB is a software development company. We design and build websites, mobile apps and business systems — from planning and design to launch and ongoing support.",
-  url: "https://gab-eosin.vercel.app",
+  url: "https://gab-sol.com",
 } as const;
