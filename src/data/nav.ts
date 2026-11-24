@@ -5,7 +5,7 @@ export const mainNav: NavItem[] = [
   { label: "Services", href: "/services", description: "What you can build" },
   { label: "How It Works", href: "/how-it-works", description: "The marketplace journey" },
   { label: "For Builders", href: "/builders", description: "Developers, studios & teams" },
-  { label: "Platform", href: "/platform", description: "Interface previews" },
+  { label: "Platform", href: "/work", description: "Interface previews" },
   { label: "FAQ", href: "/faq", description: "Honest answers" },
 ];
 
@@ -15,7 +15,7 @@ export const footerNav: { title: string; items: NavItem[] }[] = [
     items: [
       { label: "How It Works", href: "/how-it-works" },
       { label: "Explore Services", href: "/services" },
-      { label: "Platform Preview", href: "/platform" },
+      { label: "Platform Preview", href: "/work" },
     ],
   },
   {

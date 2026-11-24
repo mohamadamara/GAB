@@ -14,8 +14,8 @@ const C = {
   paper: "#18181b",
   mute: "#a6a19a",
   stone: "#77736d",
-  cu: "#f08a6c",
-  cu2: "#f6b39d",
+  cu: "#c6a052",
+  cu2: "#e3c789",
 };
 
 function Window({ children, title = true }: { children: React.ReactNode; title?: boolean }) {

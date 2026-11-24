@@ -1,3 +1,4 @@
+import { EnglishOnly } from "@/components/i18n/EnglishOnly";
 import type { Metadata } from "next";
 import { PageHero } from "@/components/layout/PageHero";
 import { SectionHeading, Accent } from "@/components/ui/SectionHeading";
@@ -33,7 +34,7 @@ const who = [
 
 export default function BuildersPage() {
   return (
-    <>
+    <EnglishOnly>
       <PageHero
         eyebrow="For builders"
         title={
@@ -155,6 +156,6 @@ export default function BuildersPage() {
         cta={{ label: "Become a Builder", href: "/contact?topic=developer" }}
         secondary={{ label: "Read the FAQ", href: "/faq" }}
       />
-    </>
+    </EnglishOnly>
   );
 }

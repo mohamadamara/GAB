@@ -9,7 +9,7 @@ import { useEffect, useRef } from "react";
  */
 
 const PALETTE = [
-  { c: "#f08a6c", w: 0.34 }, // coral
+  { c: "#c6a052", w: 0.34 }, // coral
   { c: "#a84a32", w: 0.18 }, // deep coral
   { c: "#f3ece0", w: 0.22 }, // cream
   { c: "#8a8680", w: 0.12 }, // warm grey

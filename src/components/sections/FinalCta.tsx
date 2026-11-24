@@ -14,9 +14,9 @@ export function FinalCta({
 }) {
   return (
     <section className="relative overflow-hidden border-t border-ink-900/10 py-28 sm:py-44">
-      <div aria-hidden className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_115%,rgb(240_138_108/0.22),transparent_60%)]" />
+      <div aria-hidden className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_115%,rgb(198_160_82/0.22),transparent_60%)]" />
       <div className="container-gab relative text-center">
-        <h2 className="mx-auto max-w-5xl text-balance text-[2.6rem] font-medium leading-[1] tracking-[-0.05em] text-ink-900 sm:text-6xl lg:text-[5.5rem]">
+        <h2 className="font-display mx-auto max-w-5xl text-balance text-[2.2rem] leading-[1] text-ink-900 sm:text-5xl lg:text-[4.5rem]">
           <MaskReveal>{title}</MaskReveal>
         </h2>
         <Reveal delay={0.1}>

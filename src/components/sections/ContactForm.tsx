@@ -5,13 +5,10 @@ import { useEffect, useId, useState } from "react";
 import { cn } from "@/lib/cn";
 import { Button } from "../ui/Button";
 import { easeOutExpo } from "../animations/Reveal";
+import { useLanguage } from "@/i18n/LanguageProvider";
+import type { Dict } from "@/i18n/dictionary";
 
-export const topics = [
-  { id: "general", label: "General inquiry" },
-  { id: "partnership", label: "Business partnership" },
-  { id: "developer", label: "Developer interest" },
-  { id: "collaboration", label: "Collaboration opportunity" },
-] as const;
+export const topics = [{ id: "general" }, { id: "partnership" }, { id: "developer" }, { id: "collaboration" }] as const;
 
 type TopicId = (typeof topics)[number]["id"];
 type Values = { name: string; email: string; company: string; topic: TopicId; message: string; consent: boolean };
@@ -19,18 +16,20 @@ type Errors = Partial<Record<keyof Values, string>>;
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-function validate(v: Values): Errors {
+function validate(v: Values, m: Dict["form"]["errors"]): Errors {
   const e: Errors = {};
-  if (v.name.trim().length < 2) e.name = "Please enter your name.";
-  if (!v.email.trim()) e.email = "Please enter your email address.";
-  else if (!EMAIL.test(v.email.trim())) e.email = "That email address doesn't look right.";
-  if (v.message.trim().length < 20) e.message = "Please write at least 20 characters so we understand your request.";
-  if (v.message.length > 2000) e.message = "Please keep your message under 2,000 characters.";
-  if (!v.consent) e.consent = "Please confirm so we may use these details to reply.";
+  if (v.name.trim().length < 2) e.name = m.name;
+  if (!v.email.trim()) e.email = m.emailEmpty;
+  else if (!EMAIL.test(v.email.trim())) e.email = m.emailBad;
+  if (v.message.trim().length < 20) e.message = m.messageShort;
+  if (v.message.length > 2000) e.message = m.messageLong;
+  if (!v.consent) e.consent = m.consent;
   return e;
 }
 
 export function ContactForm() {
+  const { t } = useLanguage();
+  const f = t.form;
   const id = useId();
   const [values, setValues] = useState<Values>({ name: "", email: "", company: "", topic: "general", message: "", consent: false });
   const [touched, setTouched] = useState<Partial<Record<keyof Values, boolean>>>({});
@@ -42,7 +41,7 @@ export function ContactForm() {
     if (t && topics.some((x) => x.id === t)) setValues((v) => ({ ...v, topic: t as TopicId }));
   }, []);
 
-  const errors = validate(values);
+  const errors = validate(values, f.errors);
   const show = (k: keyof Values) => (touched[k] || status !== "idle") && errors[k];
 
   const set = <K extends keyof Values>(k: K, val: Values[K]) => {
@@ -62,7 +61,7 @@ export function ContactForm() {
     setStatus("ready");
   };
 
-  const summary = `Topic: ${topics.find((t) => t.id === values.topic)?.label}\nName: ${values.name}\nEmail: ${values.email}${values.company ? `\nOrganisation: ${values.company}` : ""}\n\n${values.message}`;
+  const summary = `${f.summary.topic}: ${f.topics[values.topic]}\n${f.summary.name}: ${values.name}\n${f.summary.email}: ${values.email}${values.company ? `\n${f.summary.org}: ${values.company}` : ""}\n\n${values.message}`;
 
   const copy = async () => {
     try {
@@ -74,27 +73,27 @@ export function ContactForm() {
     }
   };
 
-  const field = "w-full rounded-[4px] border bg-white/70 px-4 text-ink-900 placeholder:text-ink-500 transition-[border-color,box-shadow] focus:outline-none focus:ring-2 focus:ring-accent-500/30";
+  const field = "w-full rounded-none border bg-paper px-4 font-mono text-ink-900 placeholder:text-ink-500 transition-[border-color,box-shadow] focus:outline-none focus:ring-2 focus:ring-accent-500/30";
   const border = (k: keyof Values) => (show(k) ? "border-[#ff5f5f]" : "border-ink-900/15 focus:border-accent-400");
 
   return (
-    <form noValidate onSubmit={onSubmit} className="metal-plate rounded-[var(--radius-panel)] p-6 sm:p-10" aria-describedby={`${id}-note`}>
+    <form noValidate onSubmit={onSubmit} className="metal-plate p-5 sm:p-10" aria-describedby={`${id}-note`}>
       <fieldset>
-        <legend className="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-accent-600">What is this about?</legend>
-        <div className="mt-4 grid grid-cols-2 gap-2">
-          {topics.map((t) => (
+        <legend className="tracking-label font-mono text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-accent-600">{f.legend}</legend>
+        <div className="mt-4 grid gap-2 sm:grid-cols-2">
+          {topics.map((tp) => (
             <label
-              key={t.id}
+              key={tp.id}
               className={cn(
-                "flex cursor-pointer items-center gap-3 rounded-[4px] border px-4 py-3 text-sm transition-colors",
-                values.topic === t.id ? "border-accent-400 bg-accent-500/10 text-ink-900" : "border-ink-900/10 text-ink-600 hover:border-ink-900/30",
+                "flex cursor-pointer items-center gap-3 border px-4 py-3 text-sm transition-colors has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-accent-500",
+                values.topic === tp.id ? "border-accent-400 bg-accent-500/10 text-ink-900" : "border-ink-900/10 text-ink-600 hover:border-ink-900/30",
               )}
             >
-              <input type="radio" name="topic" value={t.id} checked={values.topic === t.id} onChange={() => set("topic", t.id)} className="sr-only" />
-              <span aria-hidden className={cn("grid size-4 shrink-0 place-items-center rounded-full border", values.topic === t.id ? "border-accent-400" : "border-ink-900/30")}>
-                {values.topic === t.id && <span className="size-2 rounded-full bg-accent-400" />}
+              <input type="radio" name="topic" value={tp.id} checked={values.topic === tp.id} onChange={() => set("topic", tp.id)} className="sr-only" />
+              <span aria-hidden className={cn("grid size-4 shrink-0 place-items-center border", values.topic === tp.id ? "border-accent-400" : "border-ink-900/30")}>
+                {values.topic === tp.id && <span className="size-2 bg-accent-400" />}
               </span>
-              {t.label}
+              {f.topics[tp.id]}
             </label>
           ))}
         </div>
@@ -103,7 +102,7 @@ export function ContactForm() {
       <div className="mt-8 grid gap-5 sm:grid-cols-2">
         <div>
           <label htmlFor={`${id}-name`} className="mb-2 block text-sm text-ink-600">
-            Full name <span className="text-accent-600">*</span>
+            {f.name} <span className="text-accent-600">*</span>
           </label>
           <input
             id={`${id}-name`}
@@ -119,7 +118,7 @@ export function ContactForm() {
         </div>
         <div>
           <label htmlFor={`${id}-email`} className="mb-2 block text-sm text-ink-600">
-            Email address <span className="text-accent-600">*</span>
+            {f.email} <span className="text-accent-600">*</span>
           </label>
           <input
             id={`${id}-email`}
@@ -137,7 +136,7 @@ export function ContactForm() {
         </div>
         <div className="sm:col-span-2">
           <label htmlFor={`${id}-company`} className="mb-2 block text-sm text-ink-600">
-            Company or studio <span className="text-ink-500">(optional)</span>
+            {f.company} <span className="text-ink-500">{f.optional}</span>
           </label>
           <input
             id={`${id}-company`}
@@ -150,7 +149,7 @@ export function ContactForm() {
         <div className="sm:col-span-2">
           <div className="mb-2 flex items-baseline justify-between">
             <label htmlFor={`${id}-message`} className="block text-sm text-ink-600">
-              Message <span className="text-accent-600">*</span>
+              {f.message} <span className="text-accent-600">*</span>
             </label>
             <span className={cn("font-mono text-[0.68rem]", values.message.length > 2000 ? "text-[#ff5f5f]" : "text-ink-500")}>
               {values.message.length}/2000
@@ -164,11 +163,7 @@ export function ContactForm() {
             onBlur={() => setTouched((t) => ({ ...t, message: true }))}
             aria-invalid={!!show("message")}
             aria-describedby={show("message") ? `${id}-message-err` : undefined}
-            placeholder={
-              values.topic === "developer"
-                ? "Tell us about your skills, technologies and the kind of projects you'd like to find."
-                : "Tell us what you have in mind."
-            }
+            placeholder={values.topic === "developer" ? f.placeholderDev : f.placeholder}
             className={cn(field, "resize-y py-3 leading-relaxed", border("message"))}
           />
           <FieldError id={`${id}-message-err`} msg={show("message") || undefined} />
@@ -184,19 +179,19 @@ export function ContactForm() {
             onChange={(e) => set("consent", e.target.checked)}
             aria-invalid={!!show("consent")}
             aria-describedby={show("consent") ? `${id}-consent-err` : undefined}
-            className="mt-0.5 size-4 shrink-0 accent-[#f08a6c]"
+            className="mt-0.5 size-4 shrink-0 accent-[#c6a052]"
           />
-          I agree that GAB may use these details to respond to my message.
+          {f.consent}
         </label>
         <FieldError id={`${id}-consent-err`} msg={show("consent") || undefined} />
       </div>
 
       <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <p id={`${id}-note`} className="text-sm text-ink-500">
-          Fields marked <span className="text-accent-600">*</span> are required.
+          {f.required}
         </p>
-        <Button type="submit" size="lg" arrow>
-          Check & prepare message
+        <Button type="submit" size="lg" arrow className="h-auto min-h-14 w-full whitespace-normal py-3 text-center sm:w-auto">
+          {f.submit}
         </Button>
       </div>
 
@@ -207,9 +202,9 @@ export function ContactForm() {
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
-              className="rounded-[4px] border border-[#ff5f5f]/40 bg-[#ff5f5f]/10 px-4 py-3 text-sm text-[#ff8a8a]"
+              className="border border-[#ff5f5f]/40 bg-[#ff5f5f]/10 px-4 py-3 text-sm text-[#ff8a8a]"
             >
-              Please correct {Object.keys(errors).length === 1 ? "the highlighted field" : `the ${Object.keys(errors).length} highlighted fields`} and try again.
+              {Object.keys(errors).length === 1 ? f.fixOne : f.fixMany.replace("{n}", String(Object.keys(errors).length))}
             </motion.p>
           )}
           {status === "ready" && (
@@ -218,20 +213,17 @@ export function ContactForm() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5, ease: easeOutExpo }}
-              className="rounded-[4px] border border-accent-500/40 bg-accent-500/10 p-5"
+              className="border border-accent-500/40 bg-accent-500/10 p-5"
             >
-              <p className="font-medium text-ink-900">Your message is complete — but it has not been sent.</p>
-              <p className="mt-2 text-sm leading-relaxed text-ink-600">
-                GAB is in development and this form is not yet connected to a messaging service, so nothing has been
-                transmitted or stored. You can copy your message below to keep it ready.
-              </p>
-              <pre className="mt-4 max-h-48 overflow-auto whitespace-pre-wrap rounded-[4px] bg-white/80 p-4 font-mono text-xs leading-relaxed text-ink-600">{summary}</pre>
+              <p className="font-medium text-ink-900">{f.readyTitle}</p>
+              <p className="mt-2 text-sm leading-relaxed text-ink-600">{f.readyText}</p>
+              <pre dir="auto" className="mt-4 max-h-48 overflow-auto whitespace-pre-wrap bg-paper p-4 font-mono text-xs leading-relaxed text-ink-600">{summary}</pre>
               <button
                 type="button"
                 onClick={copy}
-                className="mt-4 h-10 rounded border border-accent-400 px-4 text-sm text-accent-600 transition-colors hover:bg-accent-500/10"
+                className="mt-4 h-10 border border-accent-400 px-4 font-mono text-sm text-accent-600 transition-colors hover:bg-accent-500/10"
               >
-                {copied ? "Copied ✓" : "Copy message"}
+                {copied ? f.copied : f.copy}
               </button>
             </motion.div>
           )}

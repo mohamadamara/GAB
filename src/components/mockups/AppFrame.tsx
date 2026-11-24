@@ -134,7 +134,7 @@ export function ScaledFrame({ width = 1120, children, className }: { width?: num
   }, [width]);
 
   return (
-    <div ref={outer} className={cn("relative w-full", className)} style={{ height }}>
+    <div ref={outer} lang="en" dir="ltr" className={cn("relative w-full font-sans", className)} style={{ height }}>
       <div ref={inner} style={{ width, transform: `scale(${scale})`, transformOrigin: "top left" }} className="absolute left-0 top-0">
         {children}
       </div>
