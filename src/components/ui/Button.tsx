@@ -9,32 +9,32 @@ type Variant = "primary" | "secondary" | "ghost" | "dark";
 type Size = "md" | "lg";
 
 const base =
-  "group relative isolate inline-flex items-center justify-center gap-2.5 overflow-hidden whitespace-nowrap rounded-full font-medium tracking-tight transition-[color,border-color,box-shadow] duration-500 ease-[var(--ease-out-expo)] disabled:pointer-events-none disabled:opacity-50";
+  "tracking-label group relative isolate inline-flex items-center justify-center gap-2.5 overflow-hidden whitespace-nowrap rounded-none font-mono font-semibold uppercase tracking-[0.16em] transition-[color,border-color,box-shadow] duration-500 ease-[var(--ease-out-expo)] disabled:pointer-events-none disabled:opacity-50";
 
-// Primary uses fixed colours so it stays coral-with-black-text inside dark sections too.
+// Primary uses fixed colours so it stays gold-with-light-text inside any section.
 const variants: Record<Variant, string> = {
-  primary: "bg-accent-500 text-[#080808] hover:text-[#080808]",
-  secondary: "border border-ink-900/20 bg-transparent text-ink-900 hover:border-ink-900 hover:text-paper",
+  primary: "bg-[#8a6a2a] text-[#f6efe0] hover:text-[#080807]",
+  secondary: "border border-accent-500/45 bg-transparent text-accent-600 hover:border-accent-500 hover:text-[#080807]",
   ghost: "text-ink-600 hover:text-ink-900",
-  dark: "bg-ink-900 text-paper hover:text-[#080808]",
+  dark: "border border-accent-500/60 bg-transparent text-accent-600 hover:text-[#080807]",
 };
 
-// The fill that rises from below on hover
+// The fill that sweeps in on hover
 const fills: Record<Variant, string | null> = {
-  primary: "bg-[#f3ece0]",
-  secondary: "bg-ink-900",
+  primary: "bg-accent-500",
+  secondary: "bg-accent-500",
   ghost: null,
   dark: "bg-accent-500",
 };
 
 const sizes: Record<Size, string> = {
-  md: "h-11 px-6 text-[0.9375rem]",
-  lg: "h-14 px-8 text-base",
+  md: "h-11 px-5 text-[0.75rem]",
+  lg: "h-14 px-8 text-[0.82rem]",
 };
 
 function Arrow() {
   return (
-    <svg aria-hidden viewBox="0 0 16 16" className="relative size-4" fill="none" stroke="currentColor" strokeWidth="1.6">
+    <svg aria-hidden viewBox="0 0 16 16" className="relative size-4 rtl:-scale-x-100" fill="none" stroke="currentColor" strokeWidth="1.6">
       <path d="M2 8h11M9 4l4 4-4 4" />
     </svg>
   );
@@ -58,7 +58,7 @@ function Inner({ variant, arrow, children }: { variant: Variant; arrow?: boolean
         <span
           aria-hidden
           className={cn(
-            "absolute left-1/2 top-full -z-10 aspect-square w-[140%] -translate-x-1/2 rounded-[50%] transition-transform duration-700 ease-[var(--ease-out-expo)] group-hover:-translate-y-[62%]",
+            "absolute inset-0 -z-10 origin-bottom scale-y-0 transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:scale-y-100 group-focus-visible:scale-y-100",
             fill,
           )}
         />
@@ -69,7 +69,7 @@ function Inner({ variant, arrow, children }: { variant: Variant; arrow?: boolean
   );
 }
 
-function useMagnet(strength = 0.3) {
+function useMagnet(strength = 0.12) {
   const reduce = useReducedMotion();
   const x = useSpring(useMotionValue(0), { stiffness: 220, damping: 16, mass: 0.4 });
   const y = useSpring(useMotionValue(0), { stiffness: 220, damping: 16, mass: 0.4 });

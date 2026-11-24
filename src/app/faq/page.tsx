@@ -1,3 +1,4 @@
+import { EnglishOnly } from "@/components/i18n/EnglishOnly";
 import type { Metadata } from "next";
 import { faqs } from "@/data/faq";
 import { PageHero } from "@/components/layout/PageHero";
@@ -19,7 +20,7 @@ export default function FaqPage() {
   };
 
   return (
-    <>
+    <EnglishOnly>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <PageHero
         eyebrow="FAQ"
@@ -44,7 +45,7 @@ export default function FaqPage() {
                 <ButtonLink href="/contact" arrow>
                   Ask another question
                 </ButtonLink>
-                <ButtonLink href="/platform" variant="secondary">
+                <ButtonLink href="/work" variant="secondary">
                   Preview the platform
                 </ButtonLink>
               </div>
@@ -53,6 +54,6 @@ export default function FaqPage() {
           <FaqList items={faqs} />
         </div>
       </section>
-    </>
+    </EnglishOnly>
   );
 }

@@ -1,3 +1,4 @@
+import { EnglishOnly } from "@/components/i18n/EnglishOnly";
 import type { Metadata } from "next";
 import { journey } from "@/data/journey";
 import { PageHero } from "@/components/layout/PageHero";
@@ -22,7 +23,7 @@ const builderSide = [
 
 export default function HowItWorksPage() {
   return (
-    <>
+    <EnglishOnly>
       <PageHero
         eyebrow="How it works"
         title={
@@ -36,7 +37,7 @@ export default function HowItWorksPage() {
           <ButtonLink href="#walkthrough" size="lg" arrow>
             Start the walkthrough
           </ButtonLink>
-          <ButtonLink href="/platform" size="lg" variant="secondary">
+          <ButtonLink href="/work" size="lg" variant="secondary">
             Preview the platform
           </ButtonLink>
         </div>
@@ -107,6 +108,6 @@ export default function HowItWorksPage() {
         cta={{ label: "Register your interest", href: "/contact?topic=general" }}
         secondary={{ label: "Explore services", href: "/services" }}
       />
-    </>
+    </EnglishOnly>
   );
 }

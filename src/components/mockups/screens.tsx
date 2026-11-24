@@ -361,7 +361,7 @@ export function BuilderProfileScreen({ id = "atlas-oak" }: { id?: string }) {
       <MCard className="overflow-hidden">
         <div className="relative h-24 bg-ink-900">
           <div className="bg-grid absolute inset-0 opacity-70" />
-          <div className="absolute inset-y-0 right-0 w-1/2 bg-[radial-gradient(ellipse_at_right,rgb(240_138_108/0.35),transparent_70%)]" />
+          <div className="absolute inset-y-0 right-0 w-1/2 bg-[radial-gradient(ellipse_at_right,rgb(198_160_82/0.35),transparent_70%)]" />
         </div>
         <div className="flex items-end gap-4 px-5 pb-5">
           <div className="-mt-9 rounded-full border-4 border-white">

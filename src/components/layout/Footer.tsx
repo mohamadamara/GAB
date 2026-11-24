@@ -1,62 +1,61 @@
+"use client";
+
 import Link from "next/link";
-import { footerNav } from "@/data/nav";
-import { site } from "@/lib/site";
+import { useLanguage } from "@/i18n/LanguageProvider";
 import { Logo } from "../ui/Logo";
-import { ButtonLink } from "../ui/Button";
-import { SWOOSH_PATH, WORDMARK_PATH } from "../ui/logoPaths";
 
 export function Footer() {
+  const { t } = useLanguage();
+  const cols = [
+    {
+      title: t.footer.explore,
+      items: [
+        { label: t.nav.services, href: "/services" },
+        { label: t.nav.work, href: "/work" },
+        { label: t.nav.howItWorks, href: "/how-it-works" },
+        { label: t.nav.builders, href: "/builders" },
+      ],
+    },
+    {
+      title: t.footer.company,
+      items: [
+        { label: t.nav.about, href: "/about" },
+        { label: t.nav.faq, href: "/faq" },
+        { label: t.nav.contact, href: "/contact" },
+      ],
+    },
+  ];
+
   return (
-    <footer className="relative overflow-hidden border-t border-ink-900/10 bg-paper">
-      <div className="container-gab grid gap-14 pb-16 pt-20 lg:grid-cols-[1.3fr_2fr]">
+    <footer className="border-t border-accent-500/15 bg-paper">
+      <div className="container-wide grid gap-12 py-14 md:grid-cols-[1.4fr_1fr_1fr]">
         <div className="max-w-sm">
-          <Logo tagline cutout="#080808" className="h-24" />
-          <p className="mt-6 text-[0.95rem] leading-relaxed text-ink-600">{site.tagline}</p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <ButtonLink href="/contact" variant="secondary">
-              Contact GAB
-            </ButtonLink>
-            <ButtonLink href="/contact?topic=developer" variant="secondary">
-              Register interest
-            </ButtonLink>
+          <Link href="/" aria-label={t.homeLabel} className="inline-block" dir="ltr">
+            <Logo tagline className="h-16" />
+          </Link>
+          <p className="mt-6 text-sm leading-relaxed text-ink-600">{t.footer.tagline}</p>
+        </div>
+        {cols.map((col) => (
+          <div key={col.title}>
+            <h2 className="tracking-label font-mono text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-accent-600">{col.title}</h2>
+            <ul className="mt-5 space-y-3">
+              {col.items.map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href} className="font-mono text-sm text-ink-800 transition-colors hover:text-accent-600">
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
-        </div>
-        <div className="grid grid-cols-2 gap-10 sm:grid-cols-3">
-          {footerNav.map((col) => (
-            <div key={col.title}>
-              <h3 className="text-[0.75rem] font-medium uppercase tracking-[0.14em] text-ink-500">{col.title}</h3>
-              <ul className="mt-5 space-y-3">
-                {col.items.map((item) => (
-                  <li key={item.href}>
-                    <Link href={item.href} className="group text-[1rem] font-medium text-ink-900">
-                      <span className="roll">
-                        <span>{item.label}</span>
-                        <span aria-hidden className="text-accent-600">{item.label}</span>
-                      </span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
+        ))}
       </div>
-      <div className="container-gab">
-        <p className="max-w-2xl border-t border-ink-900/10 pt-7 text-sm leading-relaxed text-ink-500">
-          GAB is currently being built. Interfaces shown on this website are conceptual previews of planned
-          functionality, not a launched service.
-        </p>
-      </div>
-      {/* Oversized ghost of the logo */}
-      <svg aria-hidden viewBox="0 -48 268 124" className="pointer-events-none mx-auto -mb-[4vw] block w-[94vw] max-w-[1320px] select-none">
-        <path d={WORDMARK_PATH} fill="rgb(243 236 224 / 0.04)" stroke="rgb(243 236 224 / 0.08)" strokeWidth="0.3" />
-        <path d={SWOOSH_PATH} fill="rgb(240 138 108 / 0.10)" stroke="rgb(240 138 108 / 0.18)" strokeWidth="0.3" />
-      </svg>
-      {/* Cream strip along the bottom */}
-      <div className="theme-inverse relative">
-        <div className="container-gab flex flex-col gap-2 py-4 font-mono text-[0.72rem] uppercase tracking-[0.12em] text-ink-900 sm:flex-row sm:items-center sm:justify-between">
-          <p>Grow. Automate. Build.</p>
-          <p className="text-ink-600">© {new Date().getFullYear()} GAB. All rights reserved.</p>
+      <div className="container-wide">
+        <div className="flex flex-col gap-4 border-t border-ink-900/10 py-6 font-mono text-[0.72rem] leading-relaxed text-ink-500 md:flex-row md:items-center md:justify-between">
+          <p className="max-w-2xl">{t.footer.note}</p>
+          <p className="shrink-0">
+            © {new Date().getFullYear()} GAB. {t.footer.rights}
+          </p>
         </div>
       </div>
     </footer>

@@ -17,6 +17,7 @@ import {
   SelectionScreen,
 } from "../mockups/screens";
 import { easeOutExpo } from "../animations/Reveal";
+import { useLanguage } from "@/i18n/LanguageProvider";
 
 const screens = [
   { id: "customer-dashboard", group: "Customer", title: "Customer dashboard", desc: "One overview of every project, its stage, and the next decision waiting for you.", C: CustomerDashboardScreen },
@@ -32,21 +33,25 @@ const screens = [
 ];
 
 export function PlatformExplorer() {
+  const { t } = useLanguage();
   const [active, setActive] = useState(0);
   const s = screens[active];
   const Screen = s.C;
+  const title = (id: string, fallback: string) => t.work.screens[id]?.[0] ?? fallback;
+  const desc = (id: string, fallback: string) => t.work.screens[id]?.[1] ?? fallback;
+  const group = (g: string) => t.work.groups[g] ?? g;
 
   return (
     <div className="grid gap-8 lg:grid-cols-[280px_1fr] lg:gap-10">
       {/* Screen list */}
       <div className="min-w-0 lg:sticky lg:top-28 lg:self-start">
-        <div role="tablist" aria-label="Platform screens" aria-orientation="vertical" className="scrollbar-none -mx-5 flex gap-2 overflow-x-auto px-5 pb-2 lg:mx-0 lg:flex-col lg:gap-0 lg:overflow-visible lg:px-0 lg:pb-0">
+        <div role="tablist" aria-label={t.work.screensLabel} aria-orientation="vertical" className="scrollbar-none -mx-4 flex gap-2 overflow-x-auto px-4 pb-2 md:-mx-8 md:px-8 lg:mx-0 lg:flex-col lg:gap-0 lg:overflow-visible lg:px-0 lg:pb-0">
           {screens.map((sc, i) => {
             const showGroup = i === 0 || screens[i - 1].group !== sc.group;
             return (
               <div key={sc.id} className="contents lg:block">
                 {showGroup && (
-                  <p className="hidden pb-2 pt-5 font-mono text-[0.65rem] uppercase tracking-[0.2em] text-ink-500 first:pt-0 lg:block">{sc.group}</p>
+                  <p className="tracking-label hidden pb-2 pt-5 font-mono text-[0.65rem] uppercase tracking-[0.2em] text-ink-500 first:pt-0 lg:block">{group(sc.group)}</p>
                 )}
                 <button
                   role="tab"
@@ -55,14 +60,14 @@ export function PlatformExplorer() {
                   aria-controls="platform-panel"
                   onClick={() => setActive(i)}
                   className={cn(
-                    "group flex shrink-0 items-center gap-3 rounded-[4px] border px-3.5 py-2.5 text-left text-sm transition-colors lg:w-full lg:rounded-none lg:border-0 lg:border-l lg:py-3",
+                    "group flex shrink-0 items-center gap-3 border px-3.5 py-2.5 text-start font-mono text-[0.82rem] transition-colors lg:w-full lg:border-0 lg:border-s lg:py-3",
                     active === i
                       ? "border-accent-400 bg-accent-500/10 text-ink-900 lg:bg-transparent"
                       : "border-ink-900/10 text-ink-500 hover:text-ink-900 lg:border-ink-900/10",
                   )}
                 >
                   <span className={cn("font-mono text-[0.68rem]", active === i ? "text-accent-600" : "text-ink-500")}>{String(i + 1).padStart(2, "0")}</span>
-                  <span className="whitespace-nowrap">{sc.title}</span>
+                  <span className="whitespace-nowrap">{title(sc.id, sc.title)}</span>
                 </button>
               </div>
             );
@@ -83,25 +88,25 @@ export function PlatformExplorer() {
             <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <p className="font-mono text-[0.68rem] uppercase tracking-[0.2em] text-accent-600">
-                  {String(active + 1).padStart(2, "0")} / {String(screens.length).padStart(2, "0")} · {s.group}
+                  {String(active + 1).padStart(2, "0")} / {String(screens.length).padStart(2, "0")} · {group(s.group)}
                 </p>
-                <h3 className="mt-2 text-2xl font-medium tracking-[-0.03em] text-ink-900 sm:text-3xl">{s.title}</h3>
-                <p className="mt-2 max-w-xl text-ink-600">{s.desc}</p>
+                <h2 className="font-display mt-2 text-2xl text-ink-950 sm:text-3xl">{title(s.id, s.title)}</h2>
+                <p className="mt-2 max-w-xl text-[0.95rem] leading-relaxed text-ink-600">{desc(s.id, s.desc)}</p>
               </div>
-              <div className="flex gap-2">
+              <div className="flex shrink-0 gap-2">
                 <button
                   onClick={() => setActive((active - 1 + screens.length) % screens.length)}
-                  className="grid size-10 place-items-center rounded border border-ink-900/15 text-ink-900 transition-colors hover:border-accent-400"
-                  aria-label="Previous screen"
+                  className="grid size-10 place-items-center border border-accent-500/40 text-accent-600 transition-colors hover:border-accent-500 hover:bg-accent-500/10"
+                  aria-label={t.work.prev}
                 >
-                  ←
+                  <span aria-hidden className="inline-block rtl:-scale-x-100">←</span>
                 </button>
                 <button
                   onClick={() => setActive((active + 1) % screens.length)}
-                  className="grid size-10 place-items-center rounded border border-ink-900/15 text-ink-900 transition-colors hover:border-accent-400"
-                  aria-label="Next screen"
+                  className="grid size-10 place-items-center border border-accent-500/40 text-accent-600 transition-colors hover:border-accent-500 hover:bg-accent-500/10"
+                  aria-label={t.work.next}
                 >
-                  →
+                  <span aria-hidden className="inline-block rtl:-scale-x-100">→</span>
                 </button>
               </div>
             </div>

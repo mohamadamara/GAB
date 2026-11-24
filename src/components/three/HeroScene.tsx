@@ -12,9 +12,9 @@ import * as THREE from "three";
  */
 
 const C = {
-  coral: "#f08a6c",
+  coral: "#c6a052",
   deep: "#a84a32",
-  light: "#f6b39d",
+  light: "#e3c789",
   cream: "#f3ece0",
   warm: "#8a8680",
   grey: "#3c3c40",

@@ -19,19 +19,28 @@ Next.js 15 (App Router) · TypeScript · Tailwind CSS v4 · Framer Motion · Rea
 
 ```
 src/
-  app/                 Routes: / about services how-it-works builders platform faq contact (+ 404, sitemap, robots)
+  app/                 Routes: / services work contact (primary, in the header) + about how-it-works builders faq
+                       (/platform permanently redirects to /work; + 404, sitemap, robots)
   components/
     layout/            Header (responsive nav), Footer, PageHero
     ui/                Design-system primitives: Button, Eyebrow, SectionHeading, DemoBadge, TiltCard, Logo
     animations/        Reveal / Stagger scroll animations
     three/             HeroScene — Idea → GAB → Builders → Product, in 3D
-    home/              Homepage sections
+    home/              HomeHero + Blueprint (the animated "people · data · work · customers → one system" diagram)
     sections/          Shared page sections (walkthrough, platform explorer, FAQ, contact form, service visuals)
     mockups/           Product design system + the 10 platform preview screens
   data/                Content: services, journey, FAQ, nav, demo (fictional) data
+  i18n/                English/Hebrew: dictionary.ts (UI copy), services.he.ts, LanguageProvider (cookie-based, sets <html lang dir>)
   lib/                 Utilities
-  app/globals.css      Design tokens (copper / graphite / warm white)
+  app/globals.css      Design tokens (black / gold / warm white, terminal-style mono type)
 ```
+
+## Languages
+
+English and Hebrew. The header switch stores the choice in the `gab-lang` cookie, so the server renders
+`<html lang dir>` directly (RTL for Hebrew). Home, Services, Work, Contact, header and footer are fully translated;
+About, How it works, For builders and FAQ are still English-only and show a notice in Hebrew mode.
+Animations respect `prefers-reduced-motion`.
 
 ## Honesty rules baked in
 

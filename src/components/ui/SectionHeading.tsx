@@ -32,7 +32,7 @@ export function SectionHeading({
       )}
       <Tag
           className={cn(
-            "mt-5 text-balance font-sans font-medium tracking-[-0.045em] text-ink-900",
+            "font-display mt-5 text-balance text-ink-900",
             Tag === "h1"
               ? "text-[2.6rem] leading-[1] sm:text-6xl lg:text-[5.25rem]"
               : "text-[2.2rem] leading-[1.02] sm:text-5xl lg:text-[3.6rem]",
@@ -51,7 +51,7 @@ export function SectionHeading({
   );
 }
 
-/** Serif italic accent inside headlines */
+/** Gold accent inside headlines */
 export function Accent({ children }: { children: React.ReactNode }) {
-  return <em className="text-accent-metal pr-1 font-serif font-normal italic tracking-[-0.01em]">{children}</em>;
+  return <em className="not-italic text-accent-600">{children}</em>;
 }

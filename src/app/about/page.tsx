@@ -1,3 +1,4 @@
+import { EnglishOnly } from "@/components/i18n/EnglishOnly";
 import type { Metadata } from "next";
 import { PageHero } from "@/components/layout/PageHero";
 import { SectionHeading, Accent } from "@/components/ui/SectionHeading";
@@ -39,7 +40,7 @@ const horizon = [
 
 export default function AboutPage() {
   return (
-    <>
+    <EnglishOnly>
       <PageHero
         eyebrow="About GAB"
         title={
@@ -204,8 +205,8 @@ export default function AboutPage() {
         title="Building GAB in the open."
         text="We're shaping the platform around real needs. Whether you'd use GAB to find a builder or to find work, your input matters now."
         cta={{ label: "Get in touch", href: "/contact" }}
-        secondary={{ label: "Preview the platform", href: "/platform" }}
+        secondary={{ label: "Preview the platform", href: "/work" }}
       />
-    </>
+    </EnglishOnly>
   );
 }

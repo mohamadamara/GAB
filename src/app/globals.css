@@ -5,49 +5,50 @@
    Yellow · Brown · Beige — warm cream surfaces, brown text, yellow highlights
    ─────────────────────────────────────────────── */
 @theme {
-  /* Black / Cream / Coral: near-black surfaces, cream text, coral highlights.
+  /* GAB blueprint: black surfaces, warm-white text, restrained gold accents.
      "ink" = text & structure (light on the dark base). */
   --color-ink-950: #ffffff;
-  --color-ink-900: #f3ece0;
-  --color-ink-850: #ebe4d8;
-  --color-ink-800: #ddd6ca;
-  --color-ink-700: #c4beb4;
-  --color-ink-600: #a6a19a;
-  --color-ink-500: #8a8680;
+  --color-ink-900: #efe9dc;
+  --color-ink-850: #e4ded1;
+  --color-ink-800: #d6d0c3;
+  --color-ink-700: #bdb7aa;
+  --color-ink-600: #a39e93;
+  --color-ink-500: #85807a;
 
   /* Greys for cards and lines */
-  --color-stone-400: #8e8e94;
-  --color-stone-300: #3c3c40;
-  --color-stone-200: #2a2a2d;
-  --color-stone-100: #1c1c1e;
+  --color-stone-400: #8e8c86;
+  --color-stone-300: #3a3833;
+  --color-stone-200: #282622;
+  --color-stone-100: #191816;
 
-  --color-paper: #080808;
-  --color-paper-2: #111113;
+  --color-paper: #080807;
+  --color-paper-2: #0f0f0d;
 
   /* Surfaces */
-  --color-mist: #111113;
-  --color-sand: #0e0e10;
+  --color-mist: #0f0f0d;
+  --color-sand: #0c0c0a;
 
-  /* Accent: coral (600/700 are text-safe on black) */
-  --color-accent-100: #2a1712;
-  --color-accent-200: #4a261c;
-  --color-accent-300: #d9765a;
-  --color-accent-400: #ee8f70;
-  --color-accent-500: #f08a6c;
-  --color-accent-600: #f29a7f;
-  --color-accent-700: #f6b39d;
+  /* Accent: gold (600/700 are text-safe on black) */
+  --color-accent-100: #1d170b;
+  --color-accent-200: #3a2e14;
+  --color-accent-300: #8a6a2a;
+  --color-accent-400: #b38d3f;
+  --color-accent-500: #c6a052;
+  --color-accent-600: #d2ae62;
+  --color-accent-700: #e3c789;
 
   --color-sage: #8fa38a;
 
-  /* "white" surfaces become dark grey cards */
-  --color-white: #1c1c1e;
+  /* "white" surfaces become dark cards */
+  --color-white: #141412;
 
-  --font-sans: var(--font-inter-tight), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter-tight), var(--font-plex-hebrew), ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-instrument-serif), ui-serif, Georgia, serif;
-  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;
+  --font-mono: var(--font-plex-mono), var(--font-plex-hebrew), ui-monospace, SFMono-Regular, monospace;
+  --font-display: var(--font-jetbrains), var(--font-plex-hebrew), ui-monospace, monospace;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --radius-panel: 22px;
+  --radius-panel: 2px;
 }
 
 @layer base {
@@ -64,10 +65,9 @@
     }
   }
   body {
-    background: #080808;
+    background: #080807;
     color: var(--color-ink-900);
-    font-family: var(--font-sans);
-    font-feature-settings: "ss01", "cv11";
+    font-family: var(--font-mono);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -87,7 +87,7 @@
 @layer components {
   /* Golden-brown gradient text — used sparingly on key words */
   .text-accent-metal {
-    background: linear-gradient(100deg, #f08a6c 0%, #f6b39d 45%, #f08a6c 75%, #d9765a 100%);
+    background: linear-gradient(100deg, #c6a052 0%, #e3c789 45%, #c6a052 75%, #b38d3f 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -95,19 +95,18 @@
 
   /* Lighter gold gradient for use on dark backgrounds */
   .text-accent-metal-light {
-    background: linear-gradient(100deg, #f08a6c 0%, #f6b39d 45%, #f08a6c 75%, #d9765a 100%);
+    background: linear-gradient(100deg, #c6a052 0%, #e3c789 45%, #c6a052 75%, #b38d3f 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
 
   .theme-inverse .text-accent-metal {
-    background-image: linear-gradient(100deg, #b4533a 0%, #d9765a 50%, #a84a32 100%);
+    background-image: linear-gradient(100deg, #7a5c22 0%, #9a7630 50%, #6e521d 100%);
   }
 
   /* Subtle engineering grid */
   .bg-grid {
-    display: none;
     background-image:
       linear-gradient(to right, rgb(255 255 255 / 0.05) 1px, transparent 1px),
       linear-gradient(to bottom, rgb(255 255 255 / 0.05) 1px, transparent 1px);
@@ -139,8 +138,8 @@
 
   /* Card surface */
   .metal-plate {
-    background: #1c1c1e;
-    border: 1px solid rgb(255 255 255 / 0.08);
+    background: #0f0f0d;
+    border: 1px solid rgb(198 160 82 / 0.22);
   }
 
   /* "Inverse" sections: cream background, near-black text.
@@ -162,8 +161,8 @@
     --color-mist: #ebe3d5;
     --color-sand: #ebe3d5;
     --color-white: #faf6ee;
-    --color-accent-600: #a84a32;
-    --color-accent-700: #8c3c27;
+    --color-accent-600: #7a5c22;
+    --color-accent-700: #5f4719;
     background-color: #f3ece0;
     color: var(--color-ink-900);
   }
@@ -182,6 +181,19 @@
   }
 }
 
+@utility container-wide {
+  width: 100%;
+  margin-inline: auto;
+  max-width: 1440px;
+  padding-inline: 1rem;
+  @media (width >= 48rem) {
+    padding-inline: 2rem;
+  }
+  @media (width >= 80rem) {
+    padding-inline: 3rem;
+  }
+}
+
 @utility scrollbar-none {
   scrollbar-width: none;
   &::-webkit-scrollbar {
@@ -189,9 +201,36 @@
   }
 }
 
-/* Custom cursor is only for mouse users */
-@media (hover: hover) and (pointer: fine) {
-  html.has-cursor, html.has-cursor * { cursor: none !important; }
+/* Display type: heavy, tight monospace headlines (terminal blueprint). */
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+}
+/* Hebrew has no case and needs no negative tracking */
+.font-display:lang(he) { letter-spacing: -0.01em; font-family: var(--font-plex-hebrew), var(--font-display); font-weight: 700; }
+.tracking-label:lang(he) { letter-spacing: 0.02em !important; }
+
+/* Blinking terminal caret */
+.caret::after {
+  content: "";
+  display: inline-block;
+  width: 0.55em;
+  height: 1em;
+  margin-inline-start: 0.15em;
+  vertical-align: -0.12em;
+  background: var(--color-accent-500);
+  animation: caret 1.1s steps(1) infinite;
+}
+@keyframes caret { 50% { opacity: 0; } }
+
+/* Faint blueprint grid used behind the hero diagram */
+.blueprint-grid {
+  background-image:
+    linear-gradient(to right, rgb(198 160 82 / 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(198 160 82 / 0.06) 1px, transparent 1px);
+  background-size: 32px 32px;
 }
 
 /* Text roll on hover (links & buttons) */

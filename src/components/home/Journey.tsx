@@ -73,7 +73,7 @@ export function Journey() {
                   className={cn(
                     "relative grid size-10 place-items-center rounded-full border font-mono text-xs transition-all duration-500",
                     i < active && "border-accent-500 bg-accent-500/20 text-accent-600",
-                    i === active && "border-accent-400 bg-accent-500 text-[#080808] shadow-[0_0_0_6px_rgb(240_138_108/0.18)]",
+                    i === active && "border-accent-400 bg-accent-500 text-[#080808] shadow-[0_0_0_6px_rgb(198_160_82/0.18)]",
                     i > active && "border-ink-900/15 bg-white text-ink-500 group-hover:border-ink-900/40",
                   )}
                 >
@@ -86,7 +86,7 @@ export function Journey() {
                         cy="25"
                         r="23"
                         fill="none"
-                        stroke="#f08a6c"
+                        stroke="#c6a052"
                         strokeWidth="1.2"
                         initial={{ pathLength: 0 }}
                         animate={{ pathLength: 1 }}
